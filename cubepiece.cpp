@@ -40,6 +40,7 @@ CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
     vao = NULL;
     vnum = 0;
     fnum = 0;
+    inum = 0;
 
     position.setX(distance*x);
     position.setY(distance*y);
@@ -115,7 +116,7 @@ void CubePiece::createVBOs()
     vboIndices->create();
     vboIndices->setUsagePattern( QOpenGLBuffer::StaticDraw );
     vboIndices->bind();
-    vboIndices->allocate( indices, fnum * 3 * sizeof(unsigned int) );
+    vboIndices->allocate( indices, inum * sizeof(unsigned int) );
 
     vboNormals = new QOpenGLBuffer( QOpenGLBuffer::VertexBuffer );
     vboNormals->create();
@@ -170,11 +171,13 @@ void CubePiece::drawObject()
     sProgram->bind();
     sProgram->setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
 
-    glDrawElements( GL_TRIANGLES, fnum * 3, GL_UNSIGNED_INT, 0 );
+    glDrawElements( GL_TRIANGLES, inum, GL_UNSIGNED_INT, 0 );
 }
 
 void CubePiece::readOFFFile(QFile *file)
 {
+    int faces_location;
+
     if( !file->open(QIODevice::ReadOnly) ) {
         QMessageBox::warning(widget, "Open File", "Not able to open the file!");
         return;
@@ -200,7 +203,6 @@ void CubePiece::readOFFFile(QFile *file)
 
         delete[] indices;
         indices = NULL;
-        indices = new unsigned int[fnum*3];
 
         float minLim = std::numeric_limits<float>::min();
         float maxLim = std::numeric_limits<float>::max();
@@ -233,24 +235,58 @@ void CubePiece::readOFFFile(QFile *file)
             vertices[i] =  point;
         }
 
+        faces_location = text.pos();
+
         QVector3D midPoint = (min + max) * 0.5;
         float invdiag = 1 / (max - min).length();
 
         for( unsigned int i = 0; i < vnum; i++ )
             vertices[i] = (vertices[i] - midPoint) * invdiag;
 
-        for( unsigned int i = 0; i < fnum; i++ ) {
+        // Discover the number of indices
+        for( int i = 0; i < (int)fnum; i++ ) {
+            strList = text.readLine().split(' ');
+
+            str = strList.at(0);
+
+            if( str.toUInt() == 3 )
+                inum += 3;
+            else
+                inum += 6;
+        }
+
+        fnum = inum/3;
+        indices = new unsigned int[inum];
+
+        text.seek(faces_location);
+
+        unsigned int i = 0;
+        while( i < inum ) {
 
             strList = text.readLine().split(' ');
 
             str = strList.at(1);
-            indices[i*3] = str.toUInt();
+            indices[i++] = str.toUInt();
 
             str = strList.at(2);
-            indices[i*3+1] = str.toUInt();
+            indices[i++] = str.toUInt();
 
             str = strList.at(3);
-            indices[i*3+2] = str.toUInt();
+            indices[i++] = str.toUInt();
+
+            str = strList.at(0);
+
+            if( str.toUInt() == 4 ) {
+
+                str = strList.at(3);
+                indices[i++] = str.toUInt();
+
+                str = strList.at(4);
+                indices[i++] = str.toUInt();
+
+                str = strList.at(1);
+                indices[i++] = str.toUInt();
+            }
         }
     }
 

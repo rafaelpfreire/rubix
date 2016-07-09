@@ -5,7 +5,7 @@ OpenGLWidget::OpenGLWidget()
     alpha = 45;
     beta = -30;
     gama = 0;
-    distance = 2;
+    distance = 3;
 
     rubix = new RubixCube(this);
 }

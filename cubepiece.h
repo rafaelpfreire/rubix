@@ -46,7 +46,7 @@ protected:
     QVector3D *normals;
     QVector3D *color;
     unsigned int* indices;
-    unsigned int vnum, fnum;
+    unsigned int vnum, fnum, inum;
 
     QVector4D position;
     QVector3D angle;

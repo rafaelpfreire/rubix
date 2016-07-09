@@ -13,6 +13,6 @@ void main(void)
     float gray = ( vPosition.y + 1 ) * 0.5;
 
     gl_Position  = vPosition;
-    varyingColor = vec4( gray, gray, gray, 1 );
-//    varyingColor = vec4( abs(normal), 1 );
+//    varyingColor = vec4( gray, gray, gray, 1 );
+    varyingColor = vec4( abs(normal), 1 );
 }
