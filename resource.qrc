@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/shader">
+        <file>sh/fshader.glsl</file>
+        <file>sh/vshader.glsl</file>
+    </qresource>
+    <qresource prefix="/off">
+        <file>rsrc/cube.off</file>
+        <file>rsrc/cubev2.off</file>
+    </qresource>
+</RCC>
