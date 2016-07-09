@@ -2,7 +2,7 @@
 
 OpenGLWidget::OpenGLWidget()
 {
-    alpha = 45;
+    alpha = 30;
     beta = -30;
     gama = 0;
     distance = 3;
