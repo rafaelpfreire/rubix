@@ -5,7 +5,7 @@ OpenGLWidget::OpenGLWidget()
     alpha = 30;
     beta = -30;
     gama = 0;
-    distance = 3;
+    distance = 4;
 
     rubix = new RubixCube(this);
 }
@@ -48,8 +48,8 @@ void OpenGLWidget::paintGL()
     QMatrix4x4 cameraTransformation;
 
     // TODO: Prevent Gimbal Lock
-    cameraTransformation.rotate(beta , 1, 0, 0);
     cameraTransformation.rotate(alpha, 0, 1, 0);
+    cameraTransformation.rotate(beta , 1, 0, 0);
     cameraTransformation.rotate(gama , 0, 0, 1);
 
     QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);

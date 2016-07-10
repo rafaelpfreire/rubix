@@ -51,6 +51,8 @@ CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
     m_idxy = y;
     m_idxz = z;
 
+    sProgram->setUniformValue("idx", QVector3D(m_idxx,m_idxy,m_idxz));
+
     angle.setX(0);
     angle.setY(0);
     angle.setZ(0);
