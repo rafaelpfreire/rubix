@@ -10,8 +10,9 @@
 #define ORANGE  vec4(1, 1, 0, 1)
 #define GRAY    vec4(0.3, 0.3, 0.3, 1)
 
-uniform mat4 mvpMatrix;
-uniform vec3 idx;
+uniform mat4  mvpMatrix;
+uniform vec3  idx;
+uniform float distance;
 
 in  vec4 vertex;
 in  vec3 normal;
@@ -19,7 +20,7 @@ out vec4 varyingColor;
 
 void main(void)
 {
-    vec4 vPosition = mvpMatrix * vertex;
+    vec4 vPosition = mvpMatrix * (vertex + distance*vec4(idx.x, idx.y, idx.z, 0));
 //    float gray = ( vPosition.y + 1 ) * 0.5;
 
     gl_Position  = vPosition;
@@ -45,5 +46,5 @@ void main(void)
         else
             varyingColor = ORANGE;
     else
-        varyingColor = BLACK;
+        varyingColor = GRAY;
 }

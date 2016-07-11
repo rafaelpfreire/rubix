@@ -24,17 +24,17 @@ void RubixCube::rotate(float anglex, float angley, float anglez)
         pieces[i]->rotate(anglex, angley, anglez);
 }
 
-void RubixCube::translate(float x, float y, float z)
-{
-    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
-        pieces[i]->translate(x, y, z);
-}
+//void RubixCube::translate(float x, float y, float z)
+//{
+//    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+//        pieces[i]->translate(x, y, z);
+//}
 
-void RubixCube::translate(QVector3D &vector)
-{
-    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
-        pieces[i]->translate(vector);
-}
+//void RubixCube::translate(QVector3D &vector)
+//{
+//    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+//        pieces[i]->translate(vector);
+//}
 
 void RubixCube::set_pMatrix(QMatrix4x4 pMatrix)
 {

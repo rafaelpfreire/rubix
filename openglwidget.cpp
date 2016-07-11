@@ -66,9 +66,10 @@ void OpenGLWidget::paintGL()
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *event)
 {
-    if( event->buttons() & Qt::LeftButton ) {
-        rubix->rotate(0, 0, 15);
-    }
+    if( event->buttons() & Qt::LeftButton )
+        rubix->rotate(0, 0, 45);
+    else if( event->buttons() & Qt::RightButton )
+        rubix->rotate(45, 0, 0);
 
     updateGL();
     event->accept();

@@ -42,16 +42,12 @@ CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
     fnum = 0;
     inum = 0;
 
-    position.setX(distance*x);
-    position.setY(distance*y);
-    position.setZ(distance*z);
-    position.setW(1);
-
     m_idxx = x;
     m_idxy = y;
     m_idxz = z;
 
     sProgram->setUniformValue("idx", QVector3D(m_idxx,m_idxy,m_idxz));
+    sProgram->setUniformValue("distance", distance);
 
     angle.setX(0);
     angle.setY(0);
@@ -165,7 +161,6 @@ void CubePiece::drawObject()
     QMatrix4x4 mMatrix;
 
     mMatrix.setToIdentity();
-    mMatrix.translate(position.toVector3D());
     mMatrix.rotate(this->angle.x(), 1, 0, 0);
     mMatrix.rotate(this->angle.y(), 0, 1, 0);
     mMatrix.rotate(this->angle.z(), 0, 0, 1);
@@ -344,21 +339,20 @@ void CubePiece::rotate(float anglex, float angley, float anglez)
     operation.rotate(anglex, 1, 0, 0);
     operation.rotate(angley, 0, 1, 0);
     operation.rotate(anglez, 0, 0, 1);
-    position = operation*position;
 }
 
-void CubePiece::translate(QVector3D &vector)
-{
-    QMatrix4x4 operation;
+//void CubePiece::translate(QVector3D &vector)
+//{
+//    QMatrix4x4 operation;
 
-    operation.setToIdentity();
-    operation.translate(vector);
+//    operation.setToIdentity();
+//    operation.translate(vector);
 
-    position = operation*position;
-}
+//    position = operation*position;
+//}
 
-void CubePiece::translate(float x, float y, float z)
-{
-    QVector3D vector(x, y, z);
-    translate(vector);
-}
+//void CubePiece::translate(float x, float y, float z)
+//{
+//    QVector3D vector(x, y, z);
+//    translate(vector);
+//}
