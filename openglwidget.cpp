@@ -47,7 +47,6 @@ void OpenGLWidget::paintGL()
     QMatrix4x4 vMatrix;
     QMatrix4x4 cameraTransformation;
 
-    // TODO: Prevent Gimbal Lock
     cameraTransformation.rotate(alpha, 0, 1, 0);
     cameraTransformation.rotate(beta , 1, 0, 0);
     cameraTransformation.rotate(gama , 0, 0, 1);
@@ -67,9 +66,11 @@ void OpenGLWidget::paintGL()
 void OpenGLWidget::mousePressEvent(QMouseEvent *event)
 {
     if( event->buttons() & Qt::LeftButton )
-        rubix->rotate(0, 0, 45);
+        rubix->rotate(45, QVector3D(0,0,1));
     else if( event->buttons() & Qt::RightButton )
-        rubix->rotate(45, 0, 0);
+        rubix->rotate(45, QVector3D(1,0,0));
+    else if( event->buttons() & Qt::MidButton )
+        rubix->rotate(45, QVector3D(0,1,0));
 
     updateGL();
     event->accept();

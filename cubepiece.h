@@ -9,15 +9,30 @@
 #include <QGLShaderProgram>
 #include <QOpenGLFunctions>
 
+#define CUBEPIECE_RIGHT_FACE  0
+#define CUBEPIECE_LEFT_FACE   1
+#define CUBEPIECE_UP_FACE     2
+#define CUBEPIECE_DOWN_FACE   3
+#define CUBEPIECE_FRONT_FACE  4
+#define CUBEPIECE_BACK_FACE   5
+
+#define CUBEPIECE_COLOR_WHITE   QVector4D(1, 1, 1, 1)
+#define CUBEPIECE_COLOR_BLACK   QVector4D(0, 0, 0, 1)
+#define CUBEPIECE_COLOR_RED     QVector4D(1, 0, 0, 1)
+#define CUBEPIECE_COLOR_GREEN   QVector4D(0, 1, 0, 1)
+#define CUBEPIECE_COLOR_BLUE    QVector4D(0, 0, 1, 1)
+#define CUBEPIECE_COLOR_YELLOW  QVector4D(0, 1, 1, 1)
+#define CUBEPIECE_COLOR_ORANGE  QVector4D(1, 1, 0, 1)
+#define CUBEPIECE_COLOR_GRAY    QVector4D(0.3, 0.3, 0.3, 1)
+
 class CubePiece : protected QOpenGLFunctions
 {
 public:
     CubePiece(QGLWidget *widget, float distance, int x, int y, int z);
     ~CubePiece();
     void drawObject();
-    void rotate(float anglex, float angley, float anglez);
-//    void translate(QVector3D &vector);
-//    void translate(float x, float y, float z);
+    void rotate(float angle, const QVector3D &vec);
+    void translate(const QVector3D &vector);
     void set_pMatrix(QMatrix4x4 pMatrix) { this->pMatrix = pMatrix; }
     void set_vMatrix(QMatrix4x4 vMatrix) { this->vMatrix = vMatrix; }
     int idxx() { return this->m_idxx; }
@@ -42,14 +57,19 @@ protected:
     QOpenGLBuffer *vboVertices;
     QOpenGLBuffer *vboIndices;
     QOpenGLBuffer *vboNormals;
-    QVector3D *vertices;
+    QVector4D *vertices;
     QVector3D *normals;
     QVector3D *color;
     unsigned int* indices;
     unsigned int vnum, fnum, inum;
 
-    QVector3D angle;
     int m_idxx, m_idxy, m_idxz;
+    QVector4D rFaceVertices[4];
+    QVector4D lFaceVertices[4];
+    QVector4D uFaceVertices[4];
+    QVector4D dFaceVertices[4];
+    QVector4D fFaceVertices[4];
+    QVector4D bFaceVertices[4];
 };
 
 #endif // CUBEPIECE_H

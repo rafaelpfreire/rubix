@@ -45,17 +45,62 @@ CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
     m_idxx = x;
     m_idxy = y;
     m_idxz = z;
-
     sProgram->setUniformValue("idx", QVector3D(m_idxx,m_idxy,m_idxz));
-    sProgram->setUniformValue("distance", distance);
 
-    angle.setX(0);
-    angle.setY(0);
-    angle.setZ(0);
-
+    // Read the OFF File and set the vertices and indices vectors
     QString pieceFileName = ":/off/rsrc/cubev2.off";
     QFile *offfile = new QFile(pieceFileName);
     readOFFFile(offfile);
+
+    float max = 0;
+    for( int i = 0; i < (int)vnum; i++ )
+        if( vertices[i].x() > max )
+            max = vertices[i].x();
+
+    int ix = 0, mix = 0;
+    int iy = 0, miy = 0;
+    int iz = 0, miz = 0;
+    for( int i = 0; i < (int)vnum; i++ ) {
+        if( vertices[i].x() >= 0.99*max )
+            rFaceVertices[ix++] = vertices[i];
+        else if( vertices[i].x() <= -0.99*max )
+            lFaceVertices[mix++] = vertices[i];
+        else if( vertices[i].y() >=  0.99*max )
+            uFaceVertices[iy++] = vertices[i];
+        else if( vertices[i].y() <= -0.99*max )
+            dFaceVertices[miy++] = vertices[i];
+        else if( vertices[i].z() >=  0.99*max )
+            fFaceVertices[iz++] = vertices[i];
+        else if( vertices[i].z() <= -0.99*max )
+            bFaceVertices[miz++] = vertices[i];
+    }
+
+    // Translate the vertices to the right position
+    QMatrix4x4 operation;
+    operation.setToIdentity();
+    operation.translate(distance * QVector3D(m_idxx, m_idxy, m_idxz));
+
+    for( int i = 0; i < (int)vnum; i++ )
+        vertices[i] = operation * vertices[i];
+
+    for( int i = 0; i < 4; i++ ) {
+        rFaceVertices[i] = operation * rFaceVertices[i];
+        lFaceVertices[i] = operation * lFaceVertices[i];
+        uFaceVertices[i] = operation * uFaceVertices[i];
+        dFaceVertices[i] = operation * dFaceVertices[i];
+        fFaceVertices[i] = operation * fFaceVertices[i];
+        bFaceVertices[i] = operation * bFaceVertices[i];
+    }
+
+    sProgram->setUniformValueArray("rFace", rFaceVertices, 4);
+    sProgram->setUniformValueArray("lFace", lFaceVertices, 4);
+    sProgram->setUniformValueArray("uFace", uFaceVertices, 4);
+    sProgram->setUniformValueArray("dFace", dFaceVertices, 4);
+    sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
+    sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
+
+    calcVerticesNormal();
+    createVBOs();
 }
 
 CubePiece::~CubePiece()
@@ -107,8 +152,8 @@ void CubePiece::createVBOs()
     vboVertices->setUsagePattern( QOpenGLBuffer::StaticDraw );
     vboVertices->bind();
     sProgram->enableAttributeArray("vertex");
-    sProgram->setAttributeArray("vertex", GL_FLOAT, 0, 3, 0);
-    vboVertices->allocate( vertices, vnum * sizeof(QVector3D) );
+    sProgram->setAttributeArray("vertex", GL_FLOAT, 0, 4, 0);
+    vboVertices->allocate( vertices, vnum * sizeof(QVector4D) );
 
     vboIndices = new QOpenGLBuffer( QOpenGLBuffer::IndexBuffer );
     vboIndices->create();
@@ -159,14 +204,12 @@ void CubePiece::drawObject()
     this->widget->makeCurrent();
 
     QMatrix4x4 mMatrix;
-
     mMatrix.setToIdentity();
-    mMatrix.rotate(this->angle.x(), 1, 0, 0);
-    mMatrix.rotate(this->angle.y(), 0, 1, 0);
-    mMatrix.rotate(this->angle.z(), 0, 0, 1);
 
     sProgram->bind();
     sProgram->setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
+
+    vao->bind();
 
     glDrawElements( GL_TRIANGLES, inum, GL_UNSIGNED_INT, 0 );
 }
@@ -196,7 +239,7 @@ void CubePiece::readOFFFile(QFile *file)
 
         delete[] vertices;
         vertices = NULL;
-        vertices = new QVector3D[vnum];
+        vertices = new QVector4D[vnum];
 
         delete[] indices;
         indices = NULL;
@@ -228,17 +271,21 @@ void CubePiece::readOFFFile(QFile *file)
             min.setY( qMin<float>(min.y(),y) );
             min.setZ( qMin<float>(min.z(),z) );
 
-            QVector3D point(x, y, z);
+            QVector4D point(x, y, z, 1.0);
             vertices[i] =  point;
         }
 
         faces_location = text.pos();
 
+        QVector3D temp;
         QVector3D midPoint = (min + max) * 0.5;
         float invdiag = 1 / (max - min).length();
 
-        for( unsigned int i = 0; i < vnum; i++ )
-            vertices[i] = (vertices[i] - midPoint) * invdiag;
+        for( unsigned int i = 0; i < vnum; i++ ) {
+            temp = vertices[i].toVector3D();
+            temp = (temp - midPoint) * invdiag;
+            vertices[i] = QVector4D(temp.x(), temp.y(), temp.z(), 1.0);
+        }
 
         // Discover the number of indices
         for( int i = 0; i < (int)fnum; i++ ) {
@@ -287,11 +334,7 @@ void CubePiece::readOFFFile(QFile *file)
         }
     }
 
-    calcVerticesNormal();
-
     file->close();
-
-    createVBOs();
 }
 
 void CubePiece::calcVerticesNormal()
@@ -316,8 +359,8 @@ void CubePiece::calcVerticesNormal()
         b = indices[i*3+1];
         c = indices[i*3+2];
 
-        u = vertices[b] - vertices[a];
-        v = vertices[c] - vertices[b];
+        u = vertices[b].toVector3D() - vertices[a].toVector3D();
+        v = vertices[c].toVector3D() - vertices[b].toVector3D();
 
         prod = QVector3D::normal(u,v);
 
@@ -330,29 +373,72 @@ void CubePiece::calcVerticesNormal()
         normals[i].normalize();
 }
 
-void CubePiece::rotate(float anglex, float angley, float anglez)
+void CubePiece::rotate(float angle, const QVector3D &vec)
+{
+    QMatrix4x4 operation;
+    operation.rotate(angle, vec);
+
+    for( int i = 0; i < (int)vnum; i++ )
+        vertices[i] = operation * vertices[i];
+
+    for( int i = 0; i < 4; i++ ) {
+        rFaceVertices[i] = operation * rFaceVertices[i];
+        lFaceVertices[i] = operation * lFaceVertices[i];
+        uFaceVertices[i] = operation * uFaceVertices[i];
+        dFaceVertices[i] = operation * dFaceVertices[i];
+        fFaceVertices[i] = operation * fFaceVertices[i];
+        bFaceVertices[i] = operation * bFaceVertices[i];
+    }
+
+    sProgram->bind();
+    sProgram->setUniformValueArray("rFace", rFaceVertices, 4);
+    sProgram->setUniformValueArray("lFace", lFaceVertices, 4);
+    sProgram->setUniformValueArray("uFace", uFaceVertices, 4);
+    sProgram->setUniformValueArray("dFace", dFaceVertices, 4);
+    sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
+    sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
+
+    calcVerticesNormal();
+
+    vboVertices->bind();
+    vboVertices->allocate( vertices, vnum * sizeof(QVector4D) );
+
+    vboNormals->bind();
+    vboNormals->allocate( normals, vnum * sizeof(QVector3D) );
+}
+
+void CubePiece::translate(const QVector3D &vec)
 {
     QMatrix4x4 operation;
 
-    this->angle += QVector3D(anglex, angley, anglez);
+    operation.setToIdentity();
+    operation.translate(vec);
 
-    operation.rotate(anglex, 1, 0, 0);
-    operation.rotate(angley, 0, 1, 0);
-    operation.rotate(anglez, 0, 0, 1);
+    for( int i = 0; i < (int)vnum; i++ )
+        vertices[i] = operation * vertices[i];
+
+    for( int i = 0; i < 4; i++ ) {
+        rFaceVertices[i] = operation * rFaceVertices[i];
+        lFaceVertices[i] = operation * lFaceVertices[i];
+        uFaceVertices[i] = operation * uFaceVertices[i];
+        dFaceVertices[i] = operation * dFaceVertices[i];
+        fFaceVertices[i] = operation * fFaceVertices[i];
+        bFaceVertices[i] = operation * bFaceVertices[i];
+    }
+
+    sProgram->bind();
+    sProgram->setUniformValueArray("rFace", rFaceVertices, 4);
+    sProgram->setUniformValueArray("lFace", lFaceVertices, 4);
+    sProgram->setUniformValueArray("uFace", uFaceVertices, 4);
+    sProgram->setUniformValueArray("dFace", dFaceVertices, 4);
+    sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
+    sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
+
+    calcVerticesNormal();
+
+    vboVertices->bind();
+    vboVertices->allocate( vertices, vnum * sizeof(QVector4D) );
+
+    vboNormals->bind();
+    vboNormals->allocate( normals, vnum * sizeof(QVector3D) );
 }
-
-//void CubePiece::translate(QVector3D &vector)
-//{
-//    QMatrix4x4 operation;
-
-//    operation.setToIdentity();
-//    operation.translate(vector);
-
-//    position = operation*position;
-//}
-
-//void CubePiece::translate(float x, float y, float z)
-//{
-//    QVector3D vector(x, y, z);
-//    translate(vector);
-//}

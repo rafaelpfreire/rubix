@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    MainWindow::showFullScreen();
+
     QWidget *centralW = new QWidget(this);
     QGridLayout *glayout = new QGridLayout(centralW);
 
@@ -15,11 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     glayout->addWidget(glwidget, 0, 0, 2, 1);
 
     this->setCentralWidget(centralW);
-
-    QAction *openFile = new QAction("&Open", this);
-    QMenu *fileMenu = menuBar()->addMenu("&File");
-
-    fileMenu->addAction(openFile);
 }
 
 MainWindow::~MainWindow()

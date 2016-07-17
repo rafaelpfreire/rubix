@@ -13,7 +13,8 @@ class RubixCube
 public:
     RubixCube(QGLWidget *widget);
     ~RubixCube();
-    void rotate(float anglex, float angley, float anglez);
+    void rotate(float angle, const QVector3D &vec);
+    void translate(const QVector3D &vec);
     void rotater(float angle);
     void rotateR(float angle);
     void rotatel(float angle);
@@ -26,8 +27,6 @@ public:
     void rotateF(float angle);
     void rotateu(float angle);
     void rotateU(float angle);
-//    void translate(float x, float y, float z);
-//    void translate(QVector3D &vector);
     void set_pMatrix(QMatrix4x4 pMatrix);
     void set_vMatrix(QMatrix4x4 vMatrix);
     void drawObject();
