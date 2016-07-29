@@ -7,6 +7,8 @@ OpenGLWidget::OpenGLWidget()
     gama = 0;
     distance = 4;
 
+    setFocusPolicy(Qt::StrongFocus);
+
     rubix = new RubixCube(this);
 }
 
@@ -70,7 +72,7 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event)
     else if( event->buttons() & Qt::RightButton )
         rubix->rotate(45, QVector3D(1,0,0));
     else if( event->buttons() & Qt::MidButton )
-        rubix->rotate(45, QVector3D(0,1,0));
+        rubix->rotateU(45);
 
     updateGL();
     event->accept();
@@ -78,8 +80,8 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event)
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    int deltaX = event->x() - lastMousePosition.x();
-    int deltaY = event->y() - lastMousePosition.y();
+//    int deltaX = event->x() - lastMousePosition.x();
+//    int deltaY = event->y() - lastMousePosition.y();
 
     if (event->buttons() & Qt::LeftButton) {
 //        alpha -= deltaX;
@@ -117,4 +119,85 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event)
     }
 
     event->accept();
+}
+
+void OpenGLWidget::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case 'D':
+
+        if( event->modifiers() == Qt::ShiftModifier )
+            rubix->rotateR(-30);
+        else
+            rubix->rotateR(30);
+
+        break;
+
+    case 'A':
+
+        if( event->modifiers() == Qt::ShiftModifier )
+            rubix->rotateL(-30);
+        else
+            rubix->rotateL(30);
+
+        break;
+
+    case 'S':
+
+        if( event->modifiers() == Qt::ShiftModifier )
+            rubix->rotateD(-30);
+        else
+            rubix->rotateD(30);
+
+        break;
+
+    case 'W':
+
+        if( event->modifiers() == Qt::ShiftModifier )
+            rubix->rotateU(-30);
+        else
+            rubix->rotateU(30);
+
+        break;
+
+    case 'F':
+
+        if( event->modifiers() == Qt::ShiftModifier )
+            rubix->rotateF(-30);
+        else
+            rubix->rotateF(30);
+
+        break;
+
+    case 'Q':
+
+        if( event->modifiers() == Qt::ShiftModifier )
+            rubix->rotateB(-30);
+        else
+            rubix->rotateB(30);
+
+        break;
+
+    case Qt::Key_Up:
+        rubix->rotate(-30, QVector3D(1,0,0));
+        break;
+
+    case Qt::Key_Down:
+        rubix->rotate(30, QVector3D(1,0,0));
+        break;
+
+    case Qt::Key_Right:
+        rubix->rotate(30, QVector3D(0,1,0));
+        break;
+
+    case Qt::Key_Left:
+        rubix->rotate(-30, QVector3D(0,1,0));
+        break;
+
+    default:
+        rubix->commitMovement();
+        break;
+    }
+
+    updateGL();
 }

@@ -15,25 +15,24 @@ public:
     ~RubixCube();
     void rotate(float angle, const QVector3D &vec);
     void translate(const QVector3D &vec);
-    void rotater(float angle);
     void rotateR(float angle);
-    void rotatel(float angle);
     void rotateL(float angle);
-    void rotateb(float angle);
     void rotateB(float angle);
-    void rotated(float angle);
     void rotateD(float angle);
-    void rotatef(float angle);
     void rotateF(float angle);
-    void rotateu(float angle);
     void rotateU(float angle);
     void set_pMatrix(QMatrix4x4 pMatrix);
     void set_vMatrix(QMatrix4x4 vMatrix);
+    void commitMovement();
     void drawObject();
 
 protected:
     CubePiece* pieces[RUBIX_NUMBER_OF_PIECES];
     QList<CubePiece> frontPieces;
+
+    QVector3D vecx;
+    QVector3D vecy;
+    QVector3D vecz;
 
 };
 

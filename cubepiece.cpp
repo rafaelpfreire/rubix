@@ -442,3 +442,9 @@ void CubePiece::translate(const QVector3D &vec)
     vboNormals->bind();
     vboNormals->allocate( normals, vnum * sizeof(QVector3D) );
 }
+
+int CubePiece::setidx(int idxx, int idxy, int idxz) {
+    this->m_idxx = idxx;
+    this->m_idxx = idxy;
+    this->m_idxx = idxz;
+}

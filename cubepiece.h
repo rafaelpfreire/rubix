@@ -38,6 +38,7 @@ public:
     int idxx() { return this->m_idxx; }
     int idxy() { return this->m_idxy; }
     int idxz() { return this->m_idxz; }
+    int setidx(int idxx, int idxy, int idxz);
 
 protected:
     void createVBOs();

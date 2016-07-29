@@ -1,10 +1,10 @@
 #ifndef OPENGLWIDGET_H
 #define OPENGLWIDGET_H
 
-#include <QFileDialog>
 #include <QGLWidget>
 #include <QGLShaderProgram>
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include "rubixcube.h"
 
 class OpenGLWidget : public QGLWidget
@@ -22,6 +22,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
 private:
 //    CubePiece *globj, *globj2;

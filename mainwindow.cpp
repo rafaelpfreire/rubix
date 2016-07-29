@@ -7,13 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    MainWindow::showFullScreen();
+    MainWindow::showMaximized();
 
     QWidget *centralW = new QWidget(this);
     QGridLayout *glayout = new QGridLayout(centralW);
 
     OpenGLWidget *glwidget = new OpenGLWidget();
-
     glayout->addWidget(glwidget, 0, 0, 2, 1);
 
     this->setCentralWidget(centralW);
