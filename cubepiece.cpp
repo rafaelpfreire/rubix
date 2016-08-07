@@ -445,6 +445,6 @@ void CubePiece::translate(const QVector3D &vec)
 
 int CubePiece::setidx(int idxx, int idxy, int idxz) {
     this->m_idxx = idxx;
-    this->m_idxx = idxy;
-    this->m_idxx = idxz;
+    this->m_idxy = idxy;
+    this->m_idxz = idxz;
 }

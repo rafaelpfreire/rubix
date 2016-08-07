@@ -72,7 +72,7 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event)
     else if( event->buttons() & Qt::RightButton )
         rubix->rotate(45, QVector3D(1,0,0));
     else if( event->buttons() & Qt::MidButton )
-        rubix->rotateU(45);
+//        rubix->rotateU();
 
     updateGL();
     event->accept();
@@ -127,54 +127,54 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
     case 'D':
 
         if( event->modifiers() == Qt::ShiftModifier )
-            rubix->rotateR(-30);
+            rubix->movement(Rubix::Rmove);
         else
-            rubix->rotateR(30);
+            rubix->movement(Rubix::rmove);
 
         break;
 
     case 'A':
 
         if( event->modifiers() == Qt::ShiftModifier )
-            rubix->rotateL(-30);
+            rubix->movement(Rubix::Lmove);
         else
-            rubix->rotateL(30);
+            rubix->movement(Rubix::lmove);
 
         break;
 
     case 'S':
 
         if( event->modifiers() == Qt::ShiftModifier )
-            rubix->rotateD(-30);
+            rubix->movement(Rubix::Dmove);
         else
-            rubix->rotateD(30);
+            rubix->movement(Rubix::dmove);
 
         break;
 
     case 'W':
 
         if( event->modifiers() == Qt::ShiftModifier )
-            rubix->rotateU(-30);
+            rubix->movement(Rubix::Umove);
         else
-            rubix->rotateU(30);
+            rubix->movement(Rubix::umove);
 
         break;
 
     case 'F':
 
         if( event->modifiers() == Qt::ShiftModifier )
-            rubix->rotateF(-30);
+            rubix->movement(Rubix::Fmove);
         else
-            rubix->rotateF(30);
+            rubix->movement(Rubix::fmove);
 
         break;
 
     case 'Q':
 
         if( event->modifiers() == Qt::ShiftModifier )
-            rubix->rotateB(-30);
+            rubix->movement(Rubix::Bmove);
         else
-            rubix->rotateB(30);
+            rubix->movement(Rubix::bmove);
 
         break;
 
@@ -195,7 +195,7 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
         break;
 
     default:
-        rubix->commitMovement();
+//        rubix->commitMovement();
         break;
     }
 

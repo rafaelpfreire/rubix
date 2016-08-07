@@ -3,37 +3,71 @@
 
 #include <QVector3D>
 #include <QtOpenGL>
+#include <QTimer>
 #include "cubepiece.h"
 
 #define RUBIX_NUMBER_OF_PIECES    27
 #define RUBIX_DISTANCE_OF_PEICES  0.6
+#define RUBIX_TIMER_TIMEOUT_MS    50
 
-class RubixCube
+namespace Rubix {
+    typedef enum MoveType {
+        noMove = 0,
+        Rmove,
+        rmove,
+        Lmove,
+        lmove,
+        Bmove,
+        bmove,
+        Dmove,
+        dmove,
+        Fmove,
+        fmove,
+        Umove,
+        umove
+    }MoveType;
+}
+
+class RubixCube : public QObject
 {
+    Q_OBJECT
+
+    typedef struct Movement {
+        float speed;
+        float finalAngle;
+        Rubix::MoveType type;
+    }Movement;
+
 public:
     RubixCube(QGLWidget *widget);
     ~RubixCube();
     void rotate(float angle, const QVector3D &vec);
     void translate(const QVector3D &vec);
+    void movement(const Rubix::MoveType move);
+    void set_pMatrix(QMatrix4x4 pMatrix);
+    void set_vMatrix(QMatrix4x4 vMatrix);
+    void drawObject();
+
+protected:
     void rotateR(float angle);
     void rotateL(float angle);
     void rotateB(float angle);
     void rotateD(float angle);
     void rotateF(float angle);
     void rotateU(float angle);
-    void set_pMatrix(QMatrix4x4 pMatrix);
-    void set_vMatrix(QMatrix4x4 vMatrix);
-    void commitMovement();
-    void drawObject();
+    void commitMovement(const Rubix::MoveType move);
 
-protected:
     CubePiece* pieces[RUBIX_NUMBER_OF_PIECES];
-    QList<CubePiece> frontPieces;
+    QTimer* timer;
+    QGLWidget* widget;
+    Movement mv;
 
     QVector3D vecx;
     QVector3D vecy;
     QVector3D vecz;
 
+protected slots:
+    void timerInterrupt();
 };
 
 #endif // RUBIXCUBE_H
