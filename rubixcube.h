@@ -67,7 +67,7 @@ protected:
     CubePiece* pieces[RUBIX_NUMBER_OF_PIECES];
     QTimer* timer;
     QGLWidget* widget;
-    Movement mv;
+    QStack<Movement> moveStack;
     QMatrix4x4 vMatrix;
 
     QVector3D vecx;

@@ -189,7 +189,7 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
         break;
 
     case Qt::Key_Right:
-        // If it was rotating left change, the view first
+        // If it was rotating left, change the view first
         if( directionFlag == 0 ) {
             directionFlag = 1;
             rubix->movement(Rubix::ChangeViewRight);
@@ -201,7 +201,7 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
         break;
 
     case Qt::Key_Left:
-        // If it was rotating right change, the view first
+        // If it was rotating right, change the view first
         if( directionFlag == 1 ) {
             directionFlag = 0;
             rubix->movement(Rubix::ChangeViewLeft);
@@ -211,6 +211,9 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
         }
 
         break;
+
+    case Qt::Key_Space:
+        rubix->movement(Rubix::Shuffle);
 
     default:
         break;

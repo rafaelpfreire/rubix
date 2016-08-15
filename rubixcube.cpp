@@ -13,10 +13,6 @@ RubixCube::RubixCube(QGLWidget *widget)
     vecy = QVector3D(0,1,0);
     vecz = QVector3D(0,0,1);
 
-    mv.finalAngle = 0;
-    mv.type = Rubix::noMove;
-    mv.speed = 0;
-
     this->widget = widget;
     this->vMatrix.setToIdentity();
 
@@ -115,7 +111,8 @@ void RubixCube::rotateU(float angle)
 
 void RubixCube::movement(const Rubix::MoveType move)
 {
-    //TODO: Implements other movements like SHUFFLE and ROTATE
+    uint randSeed;
+    Movement mv;
 
     if(timer == NULL)
     {
@@ -132,12 +129,32 @@ void RubixCube::movement(const Rubix::MoveType move)
 
             mv.finalAngle = 120;
             mv.speed = 480;
+            moveStack.push(mv);
+            break;
+
+        case Rubix::Shuffle:
+
+            // Seed for the qrand() function
+            randSeed = QTime::currentTime().msec();
+            qsrand(randSeed);
+
+            for( int i = 0; i < 30; i++ )
+            {
+                // Random move
+                mv.type = static_cast<Rubix::MoveType>(Rubix::Rmove + (qrand() % Rubix::umove));
+                mv.finalAngle = 90;
+                mv.speed = 360;
+
+                // Put the movement on the stack
+                moveStack.push(mv);
+            }
             break;
 
         default:
 
             mv.finalAngle = 90;
             mv.speed = 360;
+            moveStack.push(mv);
             break;
 
         }
@@ -466,7 +483,29 @@ void RubixCube::commitMovement(const Rubix::MoveType move)
 
 void RubixCube::timerInterrupt()
 {
+    static Movement mv;
     static float angle_acc = 0;
+
+    if( angle_acc == 0 ) {
+        mv = moveStack.pop();
+    }
+    else if( angle_acc == mv.finalAngle )
+    {
+        angle_acc = 0;
+
+        commitMovement(mv.type);
+
+        // If the Stack is Empty, end w/ the interrupt
+        if( moveStack.isEmpty() )
+        {
+            delete timer;
+            timer = NULL;
+        }
+
+        mv.finalAngle = 0;
+        mv.speed = 0;
+        mv.type = Rubix::noMove;
+    }
 
     switch(mv.type) {
 
@@ -570,20 +609,6 @@ void RubixCube::timerInterrupt()
 
         default:
             break;
-    }
-
-    if( angle_acc == mv.finalAngle )
-    {
-        angle_acc = 0;
-
-        delete timer;
-        timer = NULL;
-
-        commitMovement(mv.type);
-
-        mv.finalAngle = 0;
-        mv.speed = 0;
-        mv.type = Rubix::noMove;
     }
 
     widget->updateGL();
