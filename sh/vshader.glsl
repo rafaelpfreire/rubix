@@ -1,14 +1,5 @@
 #version 130
 
-//#define WHITE   vec4(1, 1, 1, 1)
-//#define BLACK   vec4(0, 0, 0, 1)
-//#define RED     vec4(1, 0, 0, 1)
-//#define GREEN   vec4(0, 1, 0, 1)
-//#define BLUE    vec4(0, 0, 1, 1)
-//#define ORANGE  vec4(0, 1, 1, 1)
-//#define YELLOW  vec4(1, 1, 0, 1)
-//#define GRAY    vec4(0.3, 0.3, 0.3, 1)
-
 uniform mat4 mvpMatrix;
 uniform vec3 idx;
 uniform vec4 rFace[4];
@@ -27,8 +18,8 @@ const vec4 BLACK  = vec4(0, 0, 0, 1);
 const vec4 RED    = vec4(1, 0, 0, 1);
 const vec4 GREEN  = vec4(0, 1, 0, 1);
 const vec4 BLUE   = vec4(0, 0, 1, 1);
-const vec4 ORANGE = vec4(0, 1, 1, 1);
-const vec4 YELLOW = vec4(1, 1, 0, 1);
+const vec4 ORANGE = vec4(1, 0.3, 0, 1);
+const vec4 YELLOW = vec4(1, 0.8, 0, 1);
 const vec4 GRAY   = vec4(0.3, 0.3, 0.3, 1);
 
 void main(void)
@@ -40,16 +31,16 @@ void main(void)
     varyingColor = GRAY;
     for( int i = 0; i < 4; i++ ) {
         if( vertex == rFace[i] && idx.x == 1.0 )
-            varyingColor = BLUE;
+            varyingColor = ORANGE;
         else if( vertex == lFace[i] && idx.x == -1.0 )
             varyingColor = RED;
         else if( vertex == uFace[i] && idx.y ==  1.0 )
-            varyingColor = GREEN;
-        else if( vertex == dFace[i] && idx.y == -1.0 )
             varyingColor = YELLOW;
-        else if( vertex == fFace[i] && idx.z ==  1.0 )
-            varyingColor = ORANGE;
-        else if( vertex == bFace[i] && idx.z == -1.0 )
+        else if( vertex == dFace[i] && idx.y == -1.0 )
             varyingColor = WHITE;
+        else if( vertex == fFace[i] && idx.z ==  1.0 )
+            varyingColor = GREEN;
+        else if( vertex == bFace[i] && idx.z == -1.0 )
+            varyingColor = BLUE;
     }
 }
