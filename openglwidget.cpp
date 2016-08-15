@@ -10,6 +10,23 @@ OpenGLWidget::OpenGLWidget()
     setFocusPolicy(Qt::StrongFocus);
 
     rubix = new RubixCube(this);
+
+    QMatrix4x4 vMatrix;
+    QMatrix4x4 cameraTransformation;
+
+    cameraTransformation.rotate(alpha, 0, 1, 0);
+    cameraTransformation.rotate(beta , 1, 0, 0);
+    cameraTransformation.rotate(gama , 0, 0, 1);
+
+    QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);
+    QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
+
+    // eye:        Cameras position to real world
+    // center:     Target Point in real world
+    // up vector:  Where is the up direction
+    vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
+
+    rubix->set_vMatrix(vMatrix);
 }
 
 OpenGLWidget::~OpenGLWidget()
@@ -45,23 +62,6 @@ void OpenGLWidget::resizeGL(int width, int height)
 void OpenGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    QMatrix4x4 vMatrix;
-    QMatrix4x4 cameraTransformation;
-
-    cameraTransformation.rotate(alpha, 0, 1, 0);
-    cameraTransformation.rotate(beta , 1, 0, 0);
-    cameraTransformation.rotate(gama , 0, 0, 1);
-
-    QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);
-    QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
-
-    // eye:        Cameras position to real world
-    // center:     Target Point in real world
-    // up vector:  Where is the up direction
-    vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
-
-    rubix->set_vMatrix(vMatrix);
     rubix->drawObject();
 }
 
@@ -123,6 +123,8 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event)
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event)
 {
+    static int directionFlag = 0;
+
     switch (event->key()) {
     case 'D':
 
@@ -179,23 +181,38 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
         break;
 
     case Qt::Key_Up:
-        rubix->rotate(-30, QVector3D(1,0,0));
+        rubix->movement(Rubix::RotateUp);
         break;
 
     case Qt::Key_Down:
-        rubix->rotate(30, QVector3D(1,0,0));
+        rubix->movement(Rubix::RotateDown);
         break;
 
     case Qt::Key_Right:
-        rubix->rotate(30, QVector3D(0,1,0));
+        // If it was rotating left change, the view first
+        if( directionFlag == 0 ) {
+            directionFlag = 1;
+            rubix->movement(Rubix::ChangeViewRight);
+        }
+        else {
+            rubix->movement(Rubix::RotateRight);
+        }
+
         break;
 
     case Qt::Key_Left:
-        rubix->rotate(-30, QVector3D(0,1,0));
+        // If it was rotating right change, the view first
+        if( directionFlag == 1 ) {
+            directionFlag = 0;
+            rubix->movement(Rubix::ChangeViewLeft);
+        }
+        else {
+            rubix->movement(Rubix::RotateLeft);
+        }
+
         break;
 
     default:
-//        rubix->commitMovement();
         break;
     }
 

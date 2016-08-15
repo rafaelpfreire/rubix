@@ -8,7 +8,7 @@
 
 #define RUBIX_NUMBER_OF_PIECES    27
 #define RUBIX_DISTANCE_OF_PEICES  0.6
-#define RUBIX_TIMER_TIMEOUT_MS    50
+#define RUBIX_TIMER_TIMEOUT_MS    25
 
 namespace Rubix {
     typedef enum MoveType {
@@ -24,7 +24,14 @@ namespace Rubix {
         Fmove,
         fmove,
         Umove,
-        umove
+        umove,
+        ChangeViewRight,
+        ChangeViewLeft,
+        RotateRight,
+        RotateLeft,
+        RotateDown,
+        RotateUp,
+        Shuffle
     }MoveType;
 }
 
@@ -61,6 +68,7 @@ protected:
     QTimer* timer;
     QGLWidget* widget;
     Movement mv;
+    QMatrix4x4 vMatrix;
 
     QVector3D vecx;
     QVector3D vecy;

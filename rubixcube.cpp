@@ -18,6 +18,7 @@ RubixCube::RubixCube(QGLWidget *widget)
     mv.speed = 0;
 
     this->widget = widget;
+    this->vMatrix.setToIdentity();
 
     timer = NULL;
 }
@@ -58,6 +59,8 @@ void RubixCube::set_pMatrix(QMatrix4x4 pMatrix)
 
 void RubixCube::set_vMatrix(QMatrix4x4 vMatrix)
 {
+    this->vMatrix = vMatrix;
+
     for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
         pieces[i]->set_vMatrix(vMatrix);
 }
@@ -121,24 +124,28 @@ void RubixCube::movement(const Rubix::MoveType move)
         timer->start(RUBIX_TIMER_TIMEOUT_MS);
 
         mv.type = move;
-        mv.finalAngle = 90;
-        mv.speed = 180;
+
+        switch(mv.type) {
+
+        case Rubix::ChangeViewRight:
+        case Rubix::ChangeViewLeft:
+
+            mv.finalAngle = 120;
+            mv.speed = 480;
+            break;
+
+        default:
+
+            mv.finalAngle = 90;
+            mv.speed = 360;
+            break;
+
+        }
     }
 }
 
 void RubixCube::commitMovement(const Rubix::MoveType move)
 {
-//    int idx = 0;
-
-//    for(int w = 1; w >= -1; w--)
-//        for(int j = 1; j >= -1; j--)
-//            for(int i = -1; i <= 1; i++)
-//                pieces[idx++]->setidx(i,j,w);
-
-//    vecx = QVector3D(1,0,0);
-//    vecy = QVector3D(0,1,0);
-//    vecz = QVector3D(0,0,1);
-
     QMatrix4x4 operation;
     QVector3D vec;
 
@@ -372,6 +379,86 @@ void RubixCube::commitMovement(const Rubix::MoveType move)
             }
             break;
 
+        case Rubix::RotateRight:
+
+            vecx = QVector3D(1,0,0);
+            vecy = QVector3D(0,1,0);
+            vecz = QVector3D(0,0,1);
+
+            operation.rotate(90, vecy);
+
+            for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+            {
+                vec.setX(pieces[i]->idxx());
+                vec.setY(pieces[i]->idxy());
+                vec.setZ(pieces[i]->idxz());
+
+                vec = operation * vec;
+
+                pieces[i]->setidx(vec.x(), vec.y(), vec.z());
+            }
+            break;
+
+        case Rubix::RotateLeft:
+
+            vecx = QVector3D(1,0,0);
+            vecy = QVector3D(0,1,0);
+            vecz = QVector3D(0,0,1);
+
+            operation.rotate(-90, vecy);
+
+            for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+            {
+                vec.setX(pieces[i]->idxx());
+                vec.setY(pieces[i]->idxy());
+                vec.setZ(pieces[i]->idxz());
+
+                vec = operation * vec;
+
+                pieces[i]->setidx(vec.x(), vec.y(), vec.z());
+            }
+            break;
+
+        case Rubix::RotateDown:
+
+            vecx = QVector3D(1,0,0);
+            vecy = QVector3D(0,1,0);
+            vecz = QVector3D(0,0,1);
+
+            operation.rotate(90, vecx);
+
+            for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+            {
+                vec.setX(pieces[i]->idxx());
+                vec.setY(pieces[i]->idxy());
+                vec.setZ(pieces[i]->idxz());
+
+                vec = operation * vec;
+
+                pieces[i]->setidx(vec.x(), vec.y(), vec.z());
+            }
+            break;
+
+        case Rubix::RotateUp:
+
+            vecx = QVector3D(1,0,0);
+            vecy = QVector3D(0,1,0);
+            vecz = QVector3D(0,0,1);
+
+            operation.rotate(-90, vecx);
+
+            for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+            {
+                vec.setX(pieces[i]->idxx());
+                vec.setY(pieces[i]->idxy());
+                vec.setZ(pieces[i]->idxz());
+
+                vec = operation * vec;
+
+                pieces[i]->setidx(vec.x(), vec.y(), vec.z());
+            }
+            break;
+
         default:
             break;
     }
@@ -443,6 +530,44 @@ void RubixCube::timerInterrupt()
             angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
             break;
 
+        case Rubix::ChangeViewRight:
+            angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
+            this->vMatrix.rotate((mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3)/2, QVector3D(0,1,0));
+            set_vMatrix(this->vMatrix);
+
+            this->drawObject();
+
+            break;
+
+        case Rubix::ChangeViewLeft:
+            angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
+            this->vMatrix.rotate((-mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3)/2, QVector3D(0,1,0));
+            set_vMatrix(this->vMatrix);
+
+            this->drawObject();
+
+            break;
+
+        case Rubix::RotateRight:
+            rotate((mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3), QVector3D(0,1,0));
+            angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
+            break;
+
+        case Rubix::RotateLeft:
+            rotate((-mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3), QVector3D(0,1,0));
+            angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
+            break;
+
+        case Rubix::RotateDown:
+            rotate((mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3), QVector3D(1,0,0));
+            angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
+            break;
+
+        case Rubix::RotateUp:
+            rotate((-mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3), QVector3D(1,0,0));
+            angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
+            break;
+
         default:
             break;
     }
@@ -451,10 +576,10 @@ void RubixCube::timerInterrupt()
     {
         angle_acc = 0;
 
-        commitMovement(mv.type);
-
         delete timer;
         timer = NULL;
+
+        commitMovement(mv.type);
 
         mv.finalAngle = 0;
         mv.speed = 0;

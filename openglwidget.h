@@ -25,7 +25,6 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
-//    CubePiece *globj, *globj2;
     RubixCube *rubix;
     QMatrix4x4 pMatrix;
     QGLShaderProgram sProgram;
