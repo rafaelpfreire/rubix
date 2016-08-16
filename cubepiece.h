@@ -9,22 +9,6 @@
 #include <QGLShaderProgram>
 #include <QOpenGLFunctions>
 
-#define CUBEPIECE_RIGHT_FACE  0
-#define CUBEPIECE_LEFT_FACE   1
-#define CUBEPIECE_UP_FACE     2
-#define CUBEPIECE_DOWN_FACE   3
-#define CUBEPIECE_FRONT_FACE  4
-#define CUBEPIECE_BACK_FACE   5
-
-#define CUBEPIECE_COLOR_WHITE   QVector4D(1, 1, 1, 1)
-#define CUBEPIECE_COLOR_BLACK   QVector4D(0, 0, 0, 1)
-#define CUBEPIECE_COLOR_RED     QVector4D(1, 0, 0, 1)
-#define CUBEPIECE_COLOR_GREEN   QVector4D(0, 1, 0, 1)
-#define CUBEPIECE_COLOR_BLUE    QVector4D(0, 0, 1, 1)
-#define CUBEPIECE_COLOR_YELLOW  QVector4D(0, 1, 1, 1)
-#define CUBEPIECE_COLOR_ORANGE  QVector4D(1, 1, 0, 1)
-#define CUBEPIECE_COLOR_GRAY    QVector4D(0.3, 0.3, 0.3, 1)
-
 class CubePiece : protected QOpenGLFunctions
 {
 public:
@@ -35,6 +19,8 @@ public:
     void translate(const QVector3D &vector);
     void set_pMatrix(QMatrix4x4 pMatrix) { this->pMatrix = pMatrix; }
     void set_vMatrix(QMatrix4x4 vMatrix) { this->vMatrix = vMatrix; }
+    QVector3D initialPosition() { return QVector3D(i_idxx, i_idxy, i_idxz); }
+    QVector3D currentPosition() { return QVector3D(m_idxx, m_idxy, m_idxz); }
     int idxx() { return this->m_idxx; }
     int idxy() { return this->m_idxy; }
     int idxz() { return this->m_idxz; }
@@ -65,6 +51,7 @@ protected:
     unsigned int vnum, fnum, inum;
 
     int m_idxx, m_idxy, m_idxz;
+    int i_idxx, i_idxy, i_idxz;
     QVector4D rFaceVertices[4];
     QVector4D lFaceVertices[4];
     QVector4D uFaceVertices[4];

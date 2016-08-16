@@ -54,6 +54,7 @@ public:
     void set_pMatrix(QMatrix4x4 pMatrix);
     void set_vMatrix(QMatrix4x4 vMatrix);
     void drawObject();
+    bool isSolved();
 
 protected:
     void rotateR(float angle);

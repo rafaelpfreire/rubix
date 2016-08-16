@@ -613,3 +613,84 @@ void RubixCube::timerInterrupt()
 
     widget->updateGL();
 }
+
+bool RubixCube::isSolved()
+{
+    QStack<QVector3D> face_iPosition;
+    QVector3D vec1, vec2;
+    int axisFlag = 0;
+    int value;
+
+    // We're gonne loop over all the faces and see if in each face the pieces have
+    // the same axis values on their initial positions. If the initial position axis
+    // values (x, y or z) of all the pieces in the same face are equal, the cube is
+    // solved
+    for( int i = 0; i < 6; i++ )
+    {
+        // Plane Value (x = 1, x = -1, y = 1, and so on)
+        // If 'i' is even, test for plane 1. Plane -1 otherwise
+        if( (i % 2) == 0 ) value =  1;
+        else               value = -1;
+
+        // Loop over all the pieces and take the pieces of a given face.
+        // Put the initial position of these pieces on the QStack
+        for( int j = 0; j < RUBIX_NUMBER_OF_PIECES; j++ )
+        {
+            switch(i) {
+            case 0:
+            case 1: // Plane x = 1 or x = -1
+                if( pieces[j]->idxx() == value )
+                    face_iPosition.push(pieces[j]->initialPosition());
+                break;
+            case 2:
+            case 3: // Plane y = 1 or y = -1
+                if( pieces[j]->idxy() == value )
+                    face_iPosition.push(pieces[j]->initialPosition());
+                break;
+            case 4:
+            case 5: // Plane z = 1 or z = -1
+                if( pieces[j]->idxz() == value )
+                    face_iPosition.push(pieces[j]->initialPosition());
+                break;
+            default:
+                break;
+            }
+        }
+
+        // Take the first 2 initial position
+        vec1 = face_iPosition.pop();
+        vec2 = face_iPosition.pop();
+
+        // Set bit 0, 1 or 2 if the axis x, y or z are equal, correspondingly
+        if( vec1.x() == vec2.x() ) axisFlag |= (1 << 0);
+        if( vec1.y() == vec2.y() ) axisFlag |= (1 << 1);
+        if( vec1.z() == vec2.z() ) axisFlag |= (1 << 2);
+
+        // Loop over all the QStack values (Pieces' initial position on the same face)
+        while( !face_iPosition.isEmpty() )
+        {
+            // Take a new initial position on the QStack
+            vec2 = face_iPosition.pop();
+
+            // If the flag was set on a given axis however the new value's axis is
+            // not equal to the first one, reset the this axis flag. If the axisFlag == 0
+            // it means that all the flags were reseted therefore the cube is not solved
+            if( axisFlag != 0 )
+            {
+                if( (axisFlag & 0x01) && (vec1.x() != vec2.x()) ) axisFlag &= ~(0x01);
+                if( (axisFlag & 0x02) && (vec1.y() != vec2.y()) ) axisFlag &= ~(0x02);
+                if( (axisFlag & 0x04) && (vec1.z() != vec2.z()) ) axisFlag &= ~(0x04);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // Clear the stack and de Axis Flag
+        face_iPosition.clear();
+        axisFlag = 0;
+    }
+
+    return true;
+}

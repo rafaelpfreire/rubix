@@ -42,10 +42,10 @@ CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
     fnum = 0;
     inum = 0;
 
-    m_idxx = x;
-    m_idxy = y;
-    m_idxz = z;
-    sProgram->setUniformValue("idx", QVector3D(m_idxx,m_idxy,m_idxz));
+    m_idxx = i_idxx = x;
+    m_idxy = i_idxy = y;
+    m_idxz = i_idxz = z;
+    sProgram->setUniformValue("idx", QVector3D(i_idxx,i_idxy,i_idxz));
 
     // Read the OFF File and set the vertices and indices vectors
     QString pieceFileName = ":/off/rsrc/cubev2.off";
