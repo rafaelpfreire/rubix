@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include <openglwidget.h>
+#include <stopwatch.h>
 
 namespace Ui {
 class MainWindow;

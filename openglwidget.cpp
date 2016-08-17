@@ -1,6 +1,6 @@
 #include "openglwidget.h"
 
-OpenGLWidget::OpenGLWidget()
+OpenGLWidget::OpenGLWidget(QStatusBar *parent)
 {
     alpha = 30;
     beta = -30;
@@ -10,6 +10,10 @@ OpenGLWidget::OpenGLWidget()
     setFocusPolicy(Qt::StrongFocus);
 
     rubix = new RubixCube(this);
+    stopWatch = new StopWatch(parent);
+
+    connect(rubix, SIGNAL(shuffleEnd()), stopWatch, SLOT(start()));
+    connect(rubix, SIGNAL(shuffleEnd()), this, SLOT(shuffleEndCallback()));
 
     QMatrix4x4 vMatrix;
     QMatrix4x4 cameraTransformation;
@@ -220,4 +224,22 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
     }
 
     updateGL();
+}
+
+void OpenGLWidget::cubeSolvedCallback()
+{
+    QString str = "Congratulations, your time was: " +
+                  stopWatch->toString() +
+                  "\nTry again! I really believe you can reach the World Record:\n\n" +
+                  "     00:04:90   Lucas Etter (USA)";
+    QMessageBox::information(this, "You Win!", str);
+
+    disconnect(rubix, SIGNAL(solved()), stopWatch, SLOT(stop()));
+    disconnect(rubix, SIGNAL(solved()), this, SLOT(cubeSolvedCallback()));
+}
+
+void OpenGLWidget::shuffleEndCallback()
+{
+    connect(rubix, SIGNAL(solved()), stopWatch, SLOT(stop()));
+    connect(rubix, SIGNAL(solved()), this, SLOT(cubeSolvedCallback()));
 }

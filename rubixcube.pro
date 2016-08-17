@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     openglwidget.cpp \
     cubepiece.cpp \
-    rubixcube.cpp
+    rubixcube.cpp \
+    stopwatch.cpp
 
 HEADERS  += mainwindow.h \
     openglwidget.h \
     cubepiece.h \
-    rubixcube.h
+    rubixcube.h \
+    stopwatch.h
 
 FORMS    += mainwindow.ui
 

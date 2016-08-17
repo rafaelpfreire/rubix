@@ -484,6 +484,7 @@ void RubixCube::commitMovement(const Rubix::MoveType move)
 void RubixCube::timerInterrupt()
 {
     static Movement mv;
+    static int shuffleFlag = 0;
     static float angle_acc = 0;
 
     if( angle_acc == 0 ) {
@@ -495,12 +496,26 @@ void RubixCube::timerInterrupt()
 
         commitMovement(mv.type);
 
-        // If the Stack is Empty, end w/ the interrupt
+        // If the Stack is Empty, end w/ the interrupt. If it is not empty
+        // after the movement ends that means that it is a shuffle movement.
+        // So set the Shuffle Flag
         if( moveStack.isEmpty() )
         {
             delete timer;
             timer = NULL;
+
+            if( shuffleFlag )
+            {
+                shuffleFlag = 0;
+                emit shuffleEnd();
+            }
         }
+        else {
+            shuffleFlag = 1;
+        }
+
+        if( this->isSolved() && (mv.type >= Rubix::Rmove) && (mv.type <= Rubix::umove) )
+            emit solved();
 
         mv.finalAngle = 0;
         mv.speed = 0;

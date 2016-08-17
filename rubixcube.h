@@ -75,6 +75,10 @@ protected:
     QVector3D vecy;
     QVector3D vecz;
 
+signals:
+    void solved();
+    void shuffleEnd();
+
 protected slots:
     void timerInterrupt();
 };

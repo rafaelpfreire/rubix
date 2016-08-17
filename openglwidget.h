@@ -6,13 +6,14 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include "rubixcube.h"
+#include "stopwatch.h"
 
 class OpenGLWidget : public QGLWidget
 {
     Q_OBJECT
 
 public:
-    explicit OpenGLWidget();
+    explicit OpenGLWidget(QStatusBar *parent);
     ~OpenGLWidget();
 
 protected:
@@ -26,6 +27,7 @@ protected:
 
 private:
     RubixCube *rubix;
+    StopWatch *stopWatch;
     QMatrix4x4 pMatrix;
     QGLShaderProgram sProgram;
     QVector<QVector3D> vertices;
@@ -35,6 +37,10 @@ private:
     double gama;
     double distance;
     QPoint lastMousePosition;
+
+protected slots:
+    void cubeSolvedCallback();
+    void shuffleEndCallback();
 };
 
 #endif // OPENGLWIDGET_H
