@@ -1,6 +1,6 @@
 #include "cubepiece.h"
 
-CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
+CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z, Light light, Material material)
 {
     this->widget = widget;
 
@@ -98,6 +98,14 @@ CubePiece::CubePiece(QGLWidget *widget, float distance, int x, int y, int z)
     sProgram->setUniformValueArray("dFace", dFaceVertices, 4);
     sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
     sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
+
+    this->light = light;
+    this->material = material;
+    sProgram->setUniformValue("lightPosition", this->light.position);
+    sProgram->setUniformValue("shininess", static_cast<GLfloat>(this->material.shininess));
+    sProgram->setUniformValue("aProd", this->light.ambient * this->material.ambient);
+    sProgram->setUniformValue("dProd", this->light.diffuse * this->material.diffuse);
+    sProgram->setUniformValue("sProd", this->light.specular* this->material.specular);
 
     calcVerticesNormal();
     createVBOs();
@@ -207,7 +215,10 @@ void CubePiece::drawObject()
     mMatrix.setToIdentity();
 
     sProgram->bind();
-    sProgram->setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
+    sProgram->setUniformValue("mMatrix", mMatrix);
+    sProgram->setUniformValue("vMatrix", vMatrix);
+    sProgram->setUniformValue("pMatrix", pMatrix);
+    sProgram->setUniformValue("nMatrix", mMatrix.normalMatrix());
 
     vao->bind();
 

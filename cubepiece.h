@@ -8,11 +8,13 @@
 #include <QFile>
 #include <QGLShaderProgram>
 #include <QOpenGLFunctions>
+#include "light.h"
+#include "material.h"
 
 class CubePiece : protected QOpenGLFunctions
 {
 public:
-    CubePiece(QGLWidget *widget, float distance, int x, int y, int z);
+    CubePiece(QGLWidget *widget, float distance, int x, int y, int z, Light light, Material material);
     ~CubePiece();
     void drawObject();
     void rotate(float angle, const QVector3D &vec);
@@ -35,6 +37,10 @@ protected:
     QGLWidget *widget;
     QMatrix4x4 pMatrix;
     QMatrix4x4 vMatrix;
+    QMatrix4x4 nMatrix;
+
+    Light light;
+    Material material;
 
     QGLShader *vertexShader;
     QGLShader *fragmentShader;

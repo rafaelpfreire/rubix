@@ -4,10 +4,13 @@ RubixCube::RubixCube(QGLWidget *widget)
 {
     int idx = 0;
 
+    Light l;
+    Material m;
+
     for(int w = 1; w >= -1; w--)
         for(int j = 1; j >= -1; j--)
             for(int i = -1; i <= 1; i++)
-                pieces[idx++] = new CubePiece(widget, RUBIX_DISTANCE_OF_PEICES, i, j, w);
+                pieces[idx++] = new CubePiece(widget, RUBIX_DISTANCE_OF_PEICES, i, j, w, l, m);
 
     vecx = QVector3D(1,0,0);
     vecy = QVector3D(0,1,0);
