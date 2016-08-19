@@ -46,7 +46,7 @@ class RubixCube : public QObject
     }Movement;
 
 public:
-    RubixCube(QGLWidget *widget);
+    RubixCube(QGLWidget *widget, Light *light, Material *material);
     ~RubixCube();
     void rotate(float angle, const QVector3D &vec);
     void translate(const QVector3D &vec);

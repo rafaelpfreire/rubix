@@ -1,9 +1,9 @@
 #include "material.h"
 
-Material::Material()
-{    
-    ambient = QVector4D(.3, .3, .3, 1.0);
-    diffuse = QVector4D(1, 1, 1, 1.0);
-    specular = QVector4D(1, 1, 1, 1.0);
-    shininess = 100.0;
+Material::Material(float shininess, QVector3D ambient, QVector3D diffuse, QVector3D specular)
+{
+    this->ambient   = QVector4D(ambient , 1.0);
+    this->diffuse   = QVector4D(diffuse , 1.0);
+    this->specular  = QVector4D(specular, 1.0);
+    this->shininess = shininess;
 }

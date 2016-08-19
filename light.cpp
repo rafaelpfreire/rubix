@@ -1,16 +1,9 @@
 #include "light.h"
 
-Light::Light()
+Light::Light(QVector3D position, QVector3D ambient, QVector3D diffuse, QVector3D specular)
 {
-    QMatrix4x4 operation;
-    operation.rotate(-15 , 1, 0, 0);
-    operation.rotate(  0 , 0, 1, 0);
-    operation.rotate(  0 , 0, 0, 1);
-
-    int distance = 15.0;
-    position = operation * QVector4D(0, 0, distance, 1.0);
-
-    ambient = QVector4D(1, 1, 1, 1.0);
-    diffuse = QVector4D(1, 1, 1, 1.0);
-    specular = QVector4D(1, 1, 1, 1.0);
+    this->position = QVector4D(position, 1.0);
+    this->ambient  = QVector4D(ambient , 1.0);
+    this->diffuse  = QVector4D(diffuse , 1.0);
+    this->specular = QVector4D(specular, 1.0);
 }

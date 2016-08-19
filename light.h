@@ -6,7 +6,7 @@
 class Light
 {
 public:
-    Light();
+    Light(QVector3D position, QVector3D ambient, QVector3D diffuse, QVector3D specular);
 
     QVector4D position;
     QVector4D ambient;

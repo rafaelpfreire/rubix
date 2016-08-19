@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     rubixcube.cpp \
     stopwatch.cpp \
     light.cpp \
-    material.cpp
+    material.cpp \
+    graphicobject.cpp
 
 HEADERS  += mainwindow.h \
     openglwidget.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     rubixcube.h \
     stopwatch.h \
     light.h \
-    material.h
+    material.h \
+    graphicobject.h
 
 FORMS    += mainwindow.ui
 

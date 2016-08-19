@@ -1,16 +1,13 @@
 #include "rubixcube.h"
 
-RubixCube::RubixCube(QGLWidget *widget)
+RubixCube::RubixCube(QGLWidget *widget, Light *light, Material *material)
 {
     int idx = 0;
-
-    Light l;
-    Material m;
 
     for(int w = 1; w >= -1; w--)
         for(int j = 1; j >= -1; j--)
             for(int i = -1; i <= 1; i++)
-                pieces[idx++] = new CubePiece(widget, RUBIX_DISTANCE_OF_PEICES, i, j, w, l, m);
+                pieces[idx++] = new CubePiece(widget, light, material, RUBIX_DISTANCE_OF_PEICES, i, j, w);
 
     vecx = QVector3D(1,0,0);
     vecy = QVector3D(0,1,0);

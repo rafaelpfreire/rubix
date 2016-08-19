@@ -2,6 +2,9 @@
 
 OpenGLWidget::OpenGLWidget(QStatusBar *parent)
 {
+    QMatrix4x4 operation;
+    QVector3D position;
+
     alpha = 30;
     beta = -30;
     gama = 0;
@@ -9,7 +12,15 @@ OpenGLWidget::OpenGLWidget(QStatusBar *parent)
 
     setFocusPolicy(Qt::StrongFocus);
 
-    rubix = new RubixCube(this);
+    // Light Parameters
+    operation.rotate(-15 , 1, 0, 0);
+    position = operation * QVector3D(0, 0, 15.0);
+    Light *light = new Light(position, QVector3D(1,1,1), QVector3D(1,1,1), QVector3D(1,1,1));
+
+    // Material Parameters
+    Material *material = new Material(100.0, QVector3D(.3,.3,.3), QVector3D(1,1,1), QVector3D(1,1,1));
+
+    rubix = new RubixCube(this, light, material);
     stopWatch = new StopWatch(parent);
 
     connect(rubix, SIGNAL(shuffleEnd()), stopWatch, SLOT(start()));
