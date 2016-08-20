@@ -11,6 +11,7 @@ GraphicObject::GraphicObject(QGLWidget *widget, const QString vShaderFile, const
 
     vMatrix.setToIdentity();
     pMatrix.setToIdentity();
+    mMatrix.setToIdentity();
 
     glViewport(0, 0, 640.0, 480.0);
 

@@ -26,6 +26,8 @@ protected:
     Light *light;
     Material *material;
 
+    QQuaternion quat;
+
     int m_idxx, m_idxy, m_idxz;
     int i_idxx, i_idxy, i_idxz;
 

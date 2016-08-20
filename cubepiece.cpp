@@ -78,6 +78,7 @@ void CubePiece::drawObject()
 
     QMatrix4x4 mMatrix;
     mMatrix.setToIdentity();
+    mMatrix.rotate(quat);
 
     sProgram->bind();
     sProgram->setUniformValue("mMatrix", mMatrix);
@@ -92,36 +93,7 @@ void CubePiece::drawObject()
 
 void CubePiece::rotate(float angle, const QVector3D &vec)
 {
-    QMatrix4x4 operation;
-    operation.rotate(angle, vec);
-
-    for( int i = 0; i < (int)vnum; i++ )
-        vertices[i] = operation * vertices[i];
-
-    for( int i = 0; i < 4; i++ ) {
-        rFaceVertices[i] = operation * rFaceVertices[i];
-        lFaceVertices[i] = operation * lFaceVertices[i];
-        uFaceVertices[i] = operation * uFaceVertices[i];
-        dFaceVertices[i] = operation * dFaceVertices[i];
-        fFaceVertices[i] = operation * fFaceVertices[i];
-        bFaceVertices[i] = operation * bFaceVertices[i];
-    }
-
-    sProgram->bind();
-    sProgram->setUniformValueArray("rFace", rFaceVertices, 4);
-    sProgram->setUniformValueArray("lFace", lFaceVertices, 4);
-    sProgram->setUniformValueArray("uFace", uFaceVertices, 4);
-    sProgram->setUniformValueArray("dFace", dFaceVertices, 4);
-    sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
-    sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
-
-    calcVerticesNormal();
-
-    vboVertices->bind();
-    vboVertices->allocate( vertices, vnum * sizeof(QVector4D) );
-
-    vboNormals->bind();
-    vboNormals->allocate( normals, vnum * sizeof(QVector3D) );
+    quat = QQuaternion::fromAxisAndAngle(vec, angle) * quat;
 }
 
 void CubePiece::translate(const QVector3D &vec)

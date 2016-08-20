@@ -28,7 +28,7 @@ const vec4 GREEN  = vec4(0, 1, 0, 1);
 const vec4 BLUE   = vec4(0, 0, 1, 1);
 const vec4 ORANGE = vec4(0.9, 0.5, 0, 1);
 const vec4 YELLOW = vec4(1, 1, 0, 1);
-const vec4 GRAY   = vec4(0.2, 0.2, 0.2, 1);
+const vec4 GRAY   = vec4(0.3, 0.3, 0.3, 1);
 
 void main(void)
 {

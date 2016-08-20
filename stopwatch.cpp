@@ -44,10 +44,6 @@ void StopWatch::stop()
 
     QString str = QString("Time:    ") + this->toString();
     statusBar->showMessage(str);
-
-    qDebug() << "Stop";
-    qDebug() << QString::number(currentTime);
-    qDebug() << QString::number(startTime);
 }
 
 void StopWatch::reset()
