@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     stopwatch.cpp \
     light.cpp \
     material.cpp \
-    graphicobject.cpp
+    graphicobject.cpp \
+    camera.cpp
 
 HEADERS  += mainwindow.h \
     openglwidget.h \
@@ -29,7 +30,8 @@ HEADERS  += mainwindow.h \
     stopwatch.h \
     light.h \
     material.h \
-    graphicobject.h
+    graphicobject.h \
+    camera.h
 
 FORMS    += mainwindow.ui
 

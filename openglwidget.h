@@ -8,6 +8,7 @@
 #include "rubixcube.h"
 #include "stopwatch.h"
 #include "material.h"
+#include "camera.h"
 #include "light.h"
 
 class OpenGLWidget : public QGLWidget
@@ -28,9 +29,13 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
+    Light *light;
+    Material *material;
+    Camera *camera;
+
     RubixCube *rubix;
     StopWatch *stopWatch;
-    QMatrix4x4 pMatrix;
+//    QMatrix4x4 pMatrix;
     QGLShaderProgram sProgram;
     QVector<QVector3D> vertices;
     QVector<QVector3D> color;

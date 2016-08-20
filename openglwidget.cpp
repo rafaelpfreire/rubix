@@ -5,43 +5,32 @@ OpenGLWidget::OpenGLWidget(QStatusBar *parent)
     QMatrix4x4 operation;
     QVector3D position;
 
-    alpha = 30;
-    beta = -30;
-    gama = 0;
-    distance = 4;
-
     setFocusPolicy(Qt::StrongFocus);
 
     // Light Parameters
     operation.rotate(-15 , 1, 0, 0);
     position = operation * QVector3D(0, 0, 15.0);
-    Light *light = new Light(position, QVector3D(1,1,1), QVector3D(1,1,1), QVector3D(1,1,1));
+    light = new Light(position, QVector3D(1,1,1), QVector3D(1,1,1), QVector3D(1,1,1));
 
     // Material Parameters
-    Material *material = new Material(100.0, QVector3D(.3,.3,.3), QVector3D(1,1,1), QVector3D(1,1,1));
+    material = new Material(100.0, QVector3D(.3,.3,.3), QVector3D(1,1,1), QVector3D(1,1,1));
 
+    // Camera Parameters
+    operation.setToIdentity();
+    operation.rotate( 30, 0, 1, 0);
+    operation.rotate(-30, 1, 0, 0);
+    position = operation * QVector3D(0, 0, 4);
+    QVector3D upDirection = operation * QVector3D(0, 1, 0);
+    camera = new Camera(position, QVector3D(0,0,0), upDirection);
+
+    // Rubix Cube and Stop Watch
     rubix = new RubixCube(this, light, material);
     stopWatch = new StopWatch(parent);
 
     connect(rubix, SIGNAL(shuffleEnd()), stopWatch, SLOT(start()));
     connect(rubix, SIGNAL(shuffleEnd()), this, SLOT(shuffleEndCallback()));
 
-    QMatrix4x4 vMatrix;
-    QMatrix4x4 cameraTransformation;
-
-    cameraTransformation.rotate(alpha, 0, 1, 0);
-    cameraTransformation.rotate(beta , 1, 0, 0);
-    cameraTransformation.rotate(gama , 0, 0, 1);
-
-    QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);
-    QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
-
-    // eye:        Cameras position to real world
-    // center:     Target Point in real world
-    // up vector:  Where is the up direction
-    vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
-
-    rubix->set_vMatrix(vMatrix);
+    rubix->set_vMatrix(camera->getView());
 }
 
 OpenGLWidget::~OpenGLWidget()
@@ -50,6 +39,15 @@ OpenGLWidget::~OpenGLWidget()
         delete rubix;
         rubix = NULL;
     }
+
+    delete camera;
+    camera = NULL;
+
+    delete light;
+    light = NULL;
+
+    delete material;
+    material = NULL;
 }
 
 void OpenGLWidget::initializeGL()
@@ -67,11 +65,10 @@ void OpenGLWidget::resizeGL(int width, int height)
     }
 
     // Projection Matrix initialized via "perspective" function
-    pMatrix.setToIdentity();
-    pMatrix.perspective(60.0, (float) width / (float) height, 0.001, 1000);
+    camera->perspective(60.0, (float) width / (float) height, 0.001, 1000);
     glViewport(0, 0, width, height);
 
-    rubix->set_pMatrix(this->pMatrix);
+    rubix->set_pMatrix(camera->getProjection());
 }
 
 void OpenGLWidget::paintGL()
