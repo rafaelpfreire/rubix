@@ -24,13 +24,11 @@ OpenGLWidget::OpenGLWidget(QStatusBar *parent)
     camera = new Camera(position, QVector3D(0,0,0), upDirection);
 
     // Rubix Cube and Stop Watch
-    rubix = new RubixCube(this, light, material);
+    rubix = new RubixCube(this, *light, *material, *camera);
     stopWatch = new StopWatch(parent);
 
     connect(rubix, SIGNAL(shuffleEnd()), stopWatch, SLOT(start()));
     connect(rubix, SIGNAL(shuffleEnd()), this, SLOT(shuffleEndCallback()));
-
-    rubix->set_vMatrix(camera->getView());
 }
 
 OpenGLWidget::~OpenGLWidget()
@@ -68,7 +66,7 @@ void OpenGLWidget::resizeGL(int width, int height)
     camera->perspective(60.0, (float) width / (float) height, 0.001, 1000);
     glViewport(0, 0, width, height);
 
-    rubix->set_pMatrix(camera->getProjection());
+    rubix->setCamera(*camera);
 }
 
 void OpenGLWidget::paintGL()
@@ -238,8 +236,7 @@ void OpenGLWidget::cubeSolvedCallback()
 {
     QString str = "Congratulations, your time was: " +
                   stopWatch->toString() +
-                  "\nTry again! I really believe you can reach the World Record:\n\n" +
-                  "     00:04:90   Lucas Etter (USA)";
+                  "\nTry again!";
     QMessageBox::information(this, "You Win!", str);
 
     disconnect(rubix, SIGNAL(solved()), stopWatch, SLOT(stop()));

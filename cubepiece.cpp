@@ -1,6 +1,7 @@
 #include "cubepiece.h"
 
-CubePiece::CubePiece(QGLWidget *widget, Light *light, Material *material, float distance, int x, int y, int z) :
+CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera &camera,
+                     float distance, int x, int y, int z) :
     GraphicObject(widget, QString(":/shader/sh/vshader.glsl"), QString(":/shader/sh/fshader.glsl"),
                   QString(":off/rsrc/cubev2.off"))
 {
@@ -56,13 +57,14 @@ CubePiece::CubePiece(QGLWidget *widget, Light *light, Material *material, float 
     sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
     sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
 
-    this->light = light;
+    this->light    = light;
+    this->camera   = camera;
     this->material = material;
-    sProgram->setUniformValue("lightPosition", this->light->position);
-    sProgram->setUniformValue("shininess", static_cast<GLfloat>(this->material->shininess));
-    sProgram->setUniformValue("aProd", this->light->ambient * this->material->ambient);
-    sProgram->setUniformValue("dProd", this->light->diffuse * this->material->diffuse);
-    sProgram->setUniformValue("sProd", this->light->specular* this->material->specular);
+    sProgram->setUniformValue("lightPosition", this->light.position);
+    sProgram->setUniformValue("shininess", static_cast<GLfloat>(this->material.shininess));
+    sProgram->setUniformValue("aProd", this->light.ambient * this->material.ambient);
+    sProgram->setUniformValue("dProd", this->light.diffuse * this->material.diffuse);
+    sProgram->setUniformValue("sProd", this->light.specular* this->material.specular);
 
     calcVerticesNormal();
     createVBOs();
@@ -70,6 +72,21 @@ CubePiece::CubePiece(QGLWidget *widget, Light *light, Material *material, float 
 
 CubePiece::~CubePiece()
 {
+}
+
+void CubePiece::setLight(Light &light)
+{
+    this->light = light;
+}
+
+void CubePiece::setCamera(Camera &camera)
+{
+    this->camera = camera;
+}
+
+void CubePiece::setMaterial(Material &material)
+{
+    this->material= material;
 }
 
 void CubePiece::drawObject()
@@ -82,8 +99,8 @@ void CubePiece::drawObject()
 
     sProgram->bind();
     sProgram->setUniformValue("mMatrix", mMatrix);
-    sProgram->setUniformValue("vMatrix", vMatrix);
-    sProgram->setUniformValue("pMatrix", pMatrix);
+    sProgram->setUniformValue("vMatrix", camera.getView());
+    sProgram->setUniformValue("pMatrix", camera.getProjection());
     sProgram->setUniformValue("nMatrix", mMatrix.normalMatrix());
 
     vao->bind();

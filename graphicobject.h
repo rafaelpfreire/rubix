@@ -24,10 +24,6 @@ protected:
     void readOFFFile(QFile *file);
 
     QGLWidget *widget;
-    QMatrix4x4 mMatrix;
-    QMatrix4x4 pMatrix;
-    QMatrix4x4 vMatrix;
-    QMatrix4x4 nMatrix;
 
     QGLShader *vertexShader;
     QGLShader *fragmentShader;

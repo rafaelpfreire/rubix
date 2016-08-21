@@ -46,13 +46,14 @@ class RubixCube : public QObject
     }Movement;
 
 public:
-    RubixCube(QGLWidget *widget, Light *light, Material *material);
+    RubixCube(QGLWidget *widget, Light &light, Material &material, Camera &camera);
     ~RubixCube();
     void rotate(float angle, const QVector3D &vec);
     void translate(const QVector3D &vec);
     void movement(const Rubix::MoveType move);
-    void set_pMatrix(QMatrix4x4 pMatrix);
-    void set_vMatrix(QMatrix4x4 vMatrix);
+    void setLight(Light &light);
+    void setCamera(Camera &camera);
+    void setMaterial(Material &material);
     void drawObject();
     bool isSolved();
 
@@ -69,7 +70,6 @@ protected:
     QTimer* timer;
     QGLWidget* widget;
     QStack<Movement> moveStack;
-    QMatrix4x4 vMatrix;
 
     QVector3D vecx;
     QVector3D vecy;

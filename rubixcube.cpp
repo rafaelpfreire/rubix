@@ -1,22 +1,39 @@
 #include "rubixcube.h"
 
-RubixCube::RubixCube(QGLWidget *widget, Light *light, Material *material)
+RubixCube::RubixCube(QGLWidget *widget, Light &light, Material &material, Camera &camera)
 {
     int idx = 0;
 
     for(int w = 1; w >= -1; w--)
         for(int j = 1; j >= -1; j--)
             for(int i = -1; i <= 1; i++)
-                pieces[idx++] = new CubePiece(widget, light, material, RUBIX_DISTANCE_OF_PEICES, i, j, w);
+                pieces[idx++] = new CubePiece(widget, light, material, camera, RUBIX_DISTANCE_OF_PEICES, i, j, w);
 
     vecx = QVector3D(1,0,0);
     vecy = QVector3D(0,1,0);
     vecz = QVector3D(0,0,1);
 
     this->widget = widget;
-    this->vMatrix.setToIdentity();
 
     timer = NULL;
+}
+
+void RubixCube::setLight(Light &light)
+{
+    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+        pieces[i]->setLight(light);
+}
+
+void RubixCube::setCamera(Camera &camera)
+{
+    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+        pieces[i]->setCamera(camera);
+}
+
+void RubixCube::setMaterial(Material &material)
+{
+    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+        pieces[i]->setMaterial(material);
 }
 
 RubixCube::~RubixCube()
@@ -45,20 +62,6 @@ void RubixCube::translate(const QVector3D &vec)
 {
     for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
         pieces[i]->translate(vec);
-}
-
-void RubixCube::set_pMatrix(QMatrix4x4 pMatrix)
-{
-    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
-        pieces[i]->set_pMatrix(pMatrix);
-}
-
-void RubixCube::set_vMatrix(QMatrix4x4 vMatrix)
-{
-    this->vMatrix = vMatrix;
-
-    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
-        pieces[i]->set_vMatrix(vMatrix);
 }
 
 void RubixCube::drawObject()
@@ -483,6 +486,7 @@ void RubixCube::commitMovement(const Rubix::MoveType move)
 
 void RubixCube::timerInterrupt()
 {
+    Camera cam;
     static Movement mv;
     static int shuffleFlag = 0;
     static float angle_acc = 0;
@@ -586,8 +590,10 @@ void RubixCube::timerInterrupt()
 
         case Rubix::ChangeViewRight:
             angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
-            this->vMatrix.rotate((mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3)/2, QVector3D(0,1,0));
-            set_vMatrix(this->vMatrix);
+            cam = pieces[0]->getCamera();
+            cam.rotate((mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3)/2, QVector3D(0,1,0));
+            for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+                pieces[i]->setCamera(cam);
 
             this->drawObject();
 
@@ -595,8 +601,10 @@ void RubixCube::timerInterrupt()
 
         case Rubix::ChangeViewLeft:
             angle_acc += mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3;
-            this->vMatrix.rotate((-mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3)/2, QVector3D(0,1,0));
-            set_vMatrix(this->vMatrix);
+            cam = pieces[0]->getCamera();
+            cam.rotate((-mv.speed*RUBIX_TIMER_TIMEOUT_MS*1e-3)/2, QVector3D(0,1,0));
+            for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+                pieces[i]->setCamera(cam);
 
             this->drawObject();
 

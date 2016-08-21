@@ -9,10 +9,6 @@ GraphicObject::GraphicObject(QGLWidget *widget, const QString vShaderFile, const
 
     initializeOpenGLFunctions();
 
-    vMatrix.setToIdentity();
-    pMatrix.setToIdentity();
-    mMatrix.setToIdentity();
-
     glViewport(0, 0, 640.0, 480.0);
 
     vertexShader = new QGLShader( QGLShader::Vertex );

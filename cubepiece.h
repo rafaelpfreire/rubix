@@ -2,19 +2,25 @@
 #define CUBEPIECE_H
 
 #include "light.h"
+#include "camera.h"
 #include "material.h"
 #include "graphicobject.h"
 
 class CubePiece : protected GraphicObject
 {
 public:
-    CubePiece(QGLWidget *widget, Light *light, Material *material, float distance, int x, int y, int z);
+    CubePiece(QGLWidget *widget, Light &light, Material &material, Camera &camera,
+              float distance, int x, int y, int z);
     ~CubePiece();
     void drawObject();
     void rotate(float angle, const QVector3D &vec);
     void translate(const QVector3D &vector);
-    void set_pMatrix(QMatrix4x4 pMatrix) { this->pMatrix = pMatrix; }
-    void set_vMatrix(QMatrix4x4 vMatrix) { this->vMatrix = vMatrix; }
+    void setLight(Light &light);
+    void setCamera(Camera &camera);
+    void setMaterial(Material &material);
+    Light& getLight() { return this->light; }
+    Camera& getCamera() { return this->camera; }
+    Material& getMaterial() { return this->material; }
     QVector3D initialPosition() { return QVector3D(i_idxx, i_idxy, i_idxz); }
     QVector3D currentPosition() { return QVector3D(m_idxx, m_idxy, m_idxz); }
     int  idxx() { return this->m_idxx; }
@@ -23,8 +29,9 @@ public:
     void setidx(int idxx, int idxy, int idxz);
 
 protected:
-    Light *light;
-    Material *material;
+    Light light;
+    Camera camera;
+    Material material;
 
     QQuaternion quat;
 
