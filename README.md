@@ -18,12 +18,16 @@ Use the following keys to control the Rubix Cube
 
 ## Compiling
 
-If you're trying to compile on Linux and has a error message like
-  error: GL/gl.h: No such file or directory
+If you're trying to compile on Ubuntu and has a error message like
+```sh
+error: GL/gl.h: No such file or directory
+```
 
 try to install the packages:
-  sudo apt-get install mesa-common-dev
-  sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+```sh
+$ sudo apt-get install mesa-common-dev
+$ sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+```
 
 If it is showing another error message, please leave a comment so that we can fix together.
 
