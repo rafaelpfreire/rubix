@@ -6,6 +6,8 @@
 #include <openglwidget.h>
 #include <stopwatch.h>
 
+#include "frmabout.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,6 +22,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    frmAbout* formAbout;
 };
 
 #endif // MAINWINDOW_H

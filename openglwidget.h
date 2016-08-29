@@ -19,13 +19,17 @@ public:
     explicit OpenGLWidget(QStatusBar *parent);
     ~OpenGLWidget();
 
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+
 protected:
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
+//    void mousePressEvent(QMouseEvent *event);
+//    void mouseMoveEvent(QMouseEvent *event);
+//    void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
 private:
@@ -35,7 +39,6 @@ private:
 
     RubixCube *rubix;
     StopWatch *stopWatch;
-//    QMatrix4x4 pMatrix;
     QGLShaderProgram sProgram;
     QVector<QVector3D> vertices;
     QVector<QVector3D> color;
@@ -44,6 +47,9 @@ private:
     double gama;
     double distance;
     QPoint lastMousePosition;
+
+public slots:
+    void shuffleCube();
 
 protected slots:
     void cubeSolvedCallback();

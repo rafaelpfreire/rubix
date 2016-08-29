@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     glayout->addWidget(glwidget, 0, 0, 2, 1);
 
     this->setCentralWidget(centralW);
+
+    formAbout = new frmAbout(this);
+    connect(ui->actionAbout, SIGNAL(triggered()), formAbout, SLOT(show()));
+    connect(ui->actionStart_challenge, SIGNAL(triggered()), glwidget, SLOT(shuffleCube()));
 }
 
 MainWindow::~MainWindow()

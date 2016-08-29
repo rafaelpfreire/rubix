@@ -4,6 +4,8 @@
 #include <QVector3D>
 #include <QtOpenGL>
 #include <QTimer>
+#include <QQuaternion>
+#include <trackball.h>
 #include "cubepiece.h"
 
 #define RUBIX_NUMBER_OF_PIECES    27
@@ -56,6 +58,9 @@ public:
     void setMaterial(Material &material);
     void drawObject();
     bool isSolved();
+    void rotateQuat();
+
+    TrackBall trackBall;
 
 protected:
     void rotateR(float angle);

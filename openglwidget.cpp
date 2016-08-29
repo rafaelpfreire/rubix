@@ -29,6 +29,8 @@ OpenGLWidget::OpenGLWidget(QStatusBar *parent)
 
     connect(rubix, SIGNAL(shuffleEnd()), stopWatch, SLOT(start()));
     connect(rubix, SIGNAL(shuffleEnd()), this, SLOT(shuffleEndCallback()));
+
+    rubix->trackBall.resizeViewPort(this->width(), this->height());
 }
 
 OpenGLWidget::~OpenGLWidget()
@@ -66,6 +68,8 @@ void OpenGLWidget::resizeGL(int width, int height)
     camera->perspective(60.0, (float) width / (float) height, 0.001, 1000);
     glViewport(0, 0, width, height);
 
+
+    rubix->trackBall.resizeViewPort(width, height);
     rubix->setCamera(*camera);
 }
 
@@ -73,62 +77,6 @@ void OpenGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     rubix->drawObject();
-}
-
-void OpenGLWidget::mousePressEvent(QMouseEvent *event)
-{
-    if( event->buttons() & Qt::LeftButton )
-        qDebug() << rubix->isSolved();
-    else if( event->buttons() & Qt::RightButton )
-        rubix->rotate(45, QVector3D(1,0,0));
-    else if( event->buttons() & Qt::MidButton )
-//        rubix->rotateU();
-
-    updateGL();
-    event->accept();
-}
-
-void OpenGLWidget::mouseMoveEvent(QMouseEvent *event)
-{
-//    int deltaX = event->x() - lastMousePosition.x();
-//    int deltaY = event->y() - lastMousePosition.y();
-
-    if (event->buttons() & Qt::LeftButton) {
-//        alpha -= deltaX;
-//        while (alpha < 0) {
-//            alpha += 360;
-//        }
-//        while (alpha >= 360) {
-//            alpha -= 360;
-//        }
-//        beta -= deltaY;
-//        if (beta < 0) {
-//            beta += 360;
-//        }
-//        if (beta >= 360) {
-//            beta -= 360;
-//        }
-        updateGL();
-    }
-
-    lastMousePosition = event->pos();
-    event->accept();
-}
-
-void OpenGLWidget::wheelEvent(QWheelEvent *event)
-{
-    int delta = event->delta();
-
-    if (event->orientation() == Qt::Vertical) {
-        if (delta < 0) {
-            distance *= 1.1;
-        } else if (delta > 0) {
-            distance *= 0.9;
-        }
-        updateGL();
-    }
-
-    event->accept();
 }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event)
@@ -222,14 +170,16 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
 
         break;
 
-    case Qt::Key_Space:
-        rubix->movement(Rubix::Shuffle);
-
     default:
         break;
     }
 
     updateGL();
+}
+
+void OpenGLWidget::shuffleCube()
+{
+    rubix->movement(Rubix::Shuffle);
 }
 
 void OpenGLWidget::cubeSolvedCallback()
@@ -247,4 +197,17 @@ void OpenGLWidget::shuffleEndCallback()
 {
     connect(rubix, SIGNAL(solved()), stopWatch, SLOT(stop()));
     connect(rubix, SIGNAL(solved()), this, SLOT(cubeSolvedCallback()));
+}
+
+void OpenGLWidget::mouseMoveEvent(QMouseEvent * event){
+    rubix->trackBall.mouseMove(event->localPos());
+    rubix->rotateQuat();
+}
+
+void OpenGLWidget::mousePressEvent(QMouseEvent * event){
+    rubix->trackBall.mousePress(event->localPos());
+}
+
+void OpenGLWidget::mouseReleaseEvent(QMouseEvent * event){
+    rubix->trackBall.mouseRelease(event->localPos());
 }

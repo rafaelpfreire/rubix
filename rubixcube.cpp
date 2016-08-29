@@ -4,6 +4,7 @@ RubixCube::RubixCube(QGLWidget *widget, Light &light, Material &material, Camera
 {
     int idx = 0;
 
+    // Create 27 'CubePiece' Objects
     for(int w = 1; w >= -1; w--)
         for(int j = 1; j >= -1; j--)
             for(int i = -1; i <= 1; i++)
@@ -16,6 +17,23 @@ RubixCube::RubixCube(QGLWidget *widget, Light &light, Material &material, Camera
     this->widget = widget;
 
     timer = NULL;
+}
+
+void RubixCube::rotateQuat(){
+
+    /*for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
+        pieces[i]->rotate(trackBall.getRotation());*/
+    Camera* cam;
+    //cam = pieces[0]->getCamera();
+    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ ){
+        cam = &(pieces[i]->getCamera());
+        cam->rotate(trackBall.getRotation());
+        //pieces[i]->setCamera(cam);
+    }
+
+    this->drawObject();
+
+    widget->updateGL();
 }
 
 void RubixCube::setLight(Light &light)
@@ -117,6 +135,8 @@ void RubixCube::movement(const Rubix::MoveType move)
     uint randSeed;
     Movement mv;
 
+    // Every new movement: create a new timer
+    // and put the movement on the Stack (moveStack)
     if(timer == NULL)
     {
         timer = new QTimer(this);

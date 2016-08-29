@@ -5,16 +5,17 @@ uniform vec4 dProd;
 uniform vec4 sProd;
 uniform float shininess;
 
-in  vec3 fN;
-in  vec3 fE;
-in  vec3 fL;
+// Vectors
+in  vec3 fN; // Normal
+in  vec3 fV; // Viewer (Eye)
+in  vec3 fL; // Light
 in  vec4 varyingColor;
 out vec4 fragColor;
 
 vec4 Phong(vec3 n)
 {
     vec3 N = normalize(n);
-    vec3 E = normalize(fE);
+    vec3 E = normalize(fV);
     vec3 L = normalize(fL);
 
     float NdotL = dot(N, L);

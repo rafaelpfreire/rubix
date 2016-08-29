@@ -2,14 +2,16 @@
 
 CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera &camera,
                      float distance, int x, int y, int z) :
-    GraphicObject(widget, QString(":/shader/sh/vshader.glsl"), QString(":/shader/sh/fshader.glsl"),
-                  QString(":off/rsrc/cubev2.off"))
+    GraphicObject(widget, QString(":/Shaders/vshader.glsl"), QString(":/Shaders/fshader.glsl"),
+                  QString(":/Cube-pieces/cubev2.off"))
 {
+    // Current and Initial Positions
     m_idxx = i_idxx = x;
     m_idxy = i_idxy = y;
     m_idxz = i_idxz = z;
     sProgram->setUniformValue("idx", QVector3D(i_idxx,i_idxy,i_idxz));
 
+    // Discover the Face's Coordinates
     float max = 0;
     for( int i = 0; i < (int)vnum; i++ )
         if( vertices[i].x() > max )
@@ -38,9 +40,11 @@ CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera
     operation.setToIdentity();
     operation.translate(distance * QVector3D(m_idxx, m_idxy, m_idxz));
 
+    // Apply the trasformation to all the vertices
     for( int i = 0; i < (int)vnum; i++ )
         vertices[i] = operation * vertices[i];
 
+    // Apply the transformation to all the Faces positions
     for( int i = 0; i < 4; i++ ) {
         rFaceVertices[i] = operation * rFaceVertices[i];
         lFaceVertices[i] = operation * lFaceVertices[i];
@@ -50,6 +54,7 @@ CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera
         bFaceVertices[i] = operation * bFaceVertices[i];
     }
 
+    // Set the shader's values
     sProgram->setUniformValueArray("rFace", rFaceVertices, 4);
     sProgram->setUniformValueArray("lFace", lFaceVertices, 4);
     sProgram->setUniformValueArray("uFace", uFaceVertices, 4);
@@ -57,6 +62,7 @@ CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera
     sProgram->setUniformValueArray("fFace", fFaceVertices, 4);
     sProgram->setUniformValueArray("bFace", bFaceVertices, 4);
 
+    // Set light, camera and material parameters
     this->light    = light;
     this->camera   = camera;
     this->material = material;
@@ -66,6 +72,7 @@ CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera
     sProgram->setUniformValue("dProd", this->light.diffuse * this->material.diffuse);
     sProgram->setUniformValue("sProd", this->light.specular* this->material.specular);
 
+    // Calculate the Normal Vectors
     calcVerticesNormal();
     createVBOs();
 }
@@ -111,6 +118,11 @@ void CubePiece::drawObject()
 void CubePiece::rotate(float angle, const QVector3D &vec)
 {
     quat = QQuaternion::fromAxisAndAngle(vec, angle) * quat;
+}
+
+void CubePiece::rotate(QQuaternion &rotation)
+{
+    quat = rotation;
 }
 
 void CubePiece::translate(const QVector3D &vec)
