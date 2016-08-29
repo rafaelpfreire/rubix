@@ -1,26 +1,34 @@
 #version 130
 
-uniform mat4 mMatrix;
-uniform mat4 vMatrix;
-uniform mat4 pMatrix;
-uniform mat3 nMatrix;
+// Matrices
+uniform mat4 mMatrix; // Model
+uniform mat4 vMatrix; // View
+uniform mat4 pMatrix; // Projection
+uniform mat3 nMatrix; // Normal
 
+// Piece Initial Position
 uniform vec3 idx;
+
+// Light Position
+uniform vec4 lightPosition;
+
+// Face's Coordinates
 uniform vec4 rFace[4];
 uniform vec4 lFace[4];
 uniform vec4 uFace[4];
 uniform vec4 dFace[4];
 uniform vec4 fFace[4];
 uniform vec4 bFace[4];
-uniform vec4 lightPosition;
 
+// Vectors
 in  vec4 vertex;
 in  vec3 normal;
-out vec3 fN;
-out vec3 fL;
-out vec3 fV;
+out vec3 fN; // Normal
+out vec3 fL; // Source of Light
+out vec3 fV; // Viewer Vector (Camera)
 out vec4 varyingColor;
 
+// Colors Constants
 const vec4 WHITE  = vec4(1, 1, 1, 1);
 const vec4 BLACK  = vec4(0, 0, 0, 1);
 const vec4 RED    = vec4(1, 0, 0, 1);

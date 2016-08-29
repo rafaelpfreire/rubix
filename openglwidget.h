@@ -23,9 +23,9 @@ protected:
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
+//    void mousePressEvent(QMouseEvent *event);
+//    void mouseMoveEvent(QMouseEvent *event);
+//    void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
 private:
@@ -35,7 +35,6 @@ private:
 
     RubixCube *rubix;
     StopWatch *stopWatch;
-//    QMatrix4x4 pMatrix;
     QGLShaderProgram sProgram;
     QVector<QVector3D> vertices;
     QVector<QVector3D> color;
