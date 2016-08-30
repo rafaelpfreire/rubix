@@ -13,7 +13,6 @@ public:
               float distance, int x, int y, int z);
     ~CubePiece();
     void drawObject();
-    void rotate(QQuaternion &rotation);
     void rotate(float angle, const QVector3D &vec);
     void translate(const QVector3D &vector);
     void setLight(Light &light);

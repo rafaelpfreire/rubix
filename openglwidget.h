@@ -5,6 +5,8 @@
 #include <QGLShaderProgram>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <cmath>
+#include <QTimer>
 #include "rubixcube.h"
 #include "stopwatch.h"
 #include "material.h"
@@ -32,11 +34,18 @@ protected:
 //    void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
+    bool dragging = false, isPlaying = false;
+    int xant, yant, dx, dy;
+
+protected slots:
+    void killMovement();
+
 private:
     Light *light;
     Material *material;
     Camera *camera;
 
+    QTimer* timer;
     RubixCube *rubix;
     StopWatch *stopWatch;
     QGLShaderProgram sProgram;

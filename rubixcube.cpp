@@ -19,23 +19,6 @@ RubixCube::RubixCube(QGLWidget *widget, Light &light, Material &material, Camera
     timer = NULL;
 }
 
-void RubixCube::rotateQuat(){
-
-    /*for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )
-        pieces[i]->rotate(trackBall.getRotation());*/
-    Camera* cam;
-    //cam = pieces[0]->getCamera();
-    for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ ){
-        cam = &(pieces[i]->getCamera());
-        cam->rotate(trackBall.getRotation());
-        //pieces[i]->setCamera(cam);
-    }
-
-    this->drawObject();
-
-    widget->updateGL();
-}
-
 void RubixCube::setLight(Light &light)
 {
     for( int i = 0; i < RUBIX_NUMBER_OF_PIECES; i++ )

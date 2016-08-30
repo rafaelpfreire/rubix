@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = rubixcube
 TEMPLATE = app
 
-LIBS += -lOpengl32
+win32:LIBS += -lOpengl32
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -24,7 +24,7 @@ SOURCES += main.cpp\
         graphicobject.cpp \
         camera.cpp \
         frmabout.cpp \
-        trackball.cpp
+    frmload.cpp
 
 HEADERS  += mainwindow.h \
         openglwidget.h \
@@ -36,10 +36,11 @@ HEADERS  += mainwindow.h \
         graphicobject.h \
         camera.h \
         frmabout.h \
-        trackball.h
+    frmload.h
 
 FORMS    += mainwindow.ui \
-            frmabout.ui
+            frmabout.ui \
+    frmload.ui
 
 RESOURCES += \
             resource.qrc

@@ -120,11 +120,6 @@ void CubePiece::rotate(float angle, const QVector3D &vec)
     quat = QQuaternion::fromAxisAndAngle(vec, angle) * quat;
 }
 
-void CubePiece::rotate(QQuaternion &rotation)
-{
-    quat = rotation;
-}
-
 void CubePiece::translate(const QVector3D &vec)
 {
     QMatrix4x4 operation;
