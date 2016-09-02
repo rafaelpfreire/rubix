@@ -13,6 +13,12 @@ frmLoad::~frmLoad()
     delete ui;
 }
 
-void frmLoad::finishLoad(){
+void frmLoad::finishLoad()
+{
     frmLoad::close();
+}
+
+void frmLoad::retranslate()
+{
+    ui->retranslateUi(this);
 }

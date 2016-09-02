@@ -12,3 +12,8 @@ frmAbout::~frmAbout()
 {
     delete ui;
 }
+
+void frmAbout::retranslate()
+{
+    ui->retranslateUi(this);
+}

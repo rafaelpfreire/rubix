@@ -174,7 +174,7 @@ QComboBox::drop-down
 
 QComboBox::down-arrow
 {
-     image: url(:/imgs/down_arrow.png);
+     image: url(:/Images/down_arrow.png);
 }
 
 QGroupBox:focus
@@ -350,7 +350,7 @@ QMainWindow::separator:hover
 QToolBar::handle
 {
      spacing: 3px; /* spacing between items in the tool bar */
-     background: url(:/imgs/handle.png);
+     background: url(:/Images/handle.png);
 }
 
 QMenu::separator
@@ -470,7 +470,7 @@ QRadioButton::indicator:hover, QCheckBox::indicator:hover
 
 QCheckBox::indicator:checked
 {
-    image:url(:/imgs/checkbox.png);
+    image:url(:/Images/checkbox.png);
 }
 
 QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
@@ -500,7 +500,21 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
     </property>
     <addaction name="actionStart_challenge"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuControls"/>
+   <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -515,6 +529,22 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
    </property>
    <property name="shortcut">
     <string>Space</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
  </widget>

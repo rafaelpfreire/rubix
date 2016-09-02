@@ -21,7 +21,6 @@ public:
     explicit OpenGLWidget(QStatusBar *parent);
     ~OpenGLWidget();
 
-    void mouseMoveEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 
@@ -29,9 +28,6 @@ protected:
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();
-//    void mousePressEvent(QMouseEvent *event);
-//    void mouseMoveEvent(QMouseEvent *event);
-//    void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
     bool dragging = false, isPlaying = false;

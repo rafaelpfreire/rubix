@@ -1,8 +1,10 @@
-#-------------------------------------------------
+#------------------------------------------------------------
 #
+# Project developed by Rafael P. Freire
+# Additional implementations by Mauro M. Araújo (Nintersoft)
 # Project created by QtCreator 2016-07-07T17:43:26
 #
-#-------------------------------------------------
+#------------------------------------------------------------
 
 QT       += core gui opengl
 
@@ -24,7 +26,8 @@ SOURCES += main.cpp\
         graphicobject.cpp \
         camera.cpp \
         frmabout.cpp \
-    frmload.cpp
+        frmload.cpp \
+        frmsettings.cpp
 
 HEADERS  += mainwindow.h \
         openglwidget.h \
@@ -36,11 +39,16 @@ HEADERS  += mainwindow.h \
         graphicobject.h \
         camera.h \
         frmabout.h \
-    frmload.h
+        frmload.h \
+        frmsettings.h
 
 FORMS    += mainwindow.ui \
             frmabout.ui \
-    frmload.ui
+            frmload.ui \
+            frmsettings.ui
+
+TRANSLATIONS = Languages\Rubix_pt.ts \
+               Languages\Rubix_en.ts
 
 RESOURCES += \
             resource.qrc

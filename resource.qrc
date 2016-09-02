@@ -6,5 +6,8 @@
         <file>Shaders/vshader.glsl</file>
         <file>Images/Icon.ico</file>
         <file>Images/Icon.png</file>
+        <file>Images/checkbox.png</file>
+        <file>Images/down_arrow.png</file>
+        <file>Images/handle.png</file>
     </qresource>
 </RCC>

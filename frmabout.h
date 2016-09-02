@@ -15,6 +15,9 @@ public:
     explicit frmAbout(QWidget *parent = 0);
     ~frmAbout();
 
+public slots:
+    void retranslate();
+
 private:
     Ui::frmAbout *ui;
 };

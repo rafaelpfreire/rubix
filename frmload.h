@@ -20,6 +20,7 @@ private:
 
 public slots:
     void finishLoad();
+    void retranslate();
 };
 
 #endif // FRMLOAD_H

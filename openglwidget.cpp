@@ -189,10 +189,10 @@ void OpenGLWidget::shuffleCube()
 
 void OpenGLWidget::cubeSolvedCallback()
 {
-    QString str = tr("Congratulations, have resolved the cube challenge in: ") +
+    QString str = tr("Congratulations, you have resolved the cube challenge in: ") +
                   stopWatch->toString() +
                   tr(" seconds.\nTry again!");
-    QMessageBox::information(this, "You Won! | Rubix Cube Game 3D!", str);
+    QMessageBox::information(this, tr("You Won! | Rubix Cube Game 3D!"), str);
 
     isPlaying = false;
 
@@ -206,27 +206,14 @@ void OpenGLWidget::shuffleEndCallback()
     connect(rubix, SIGNAL(solved()), this, SLOT(cubeSolvedCallback()));
 }
 
-void OpenGLWidget::mouseMoveEvent(QMouseEvent * event){
-    /*if (dragging){
-        dx = xant - event->pos.x();
-        dy = yant - event->pos.y();
-    }*/
-}
-
-void OpenGLWidget::mousePressEvent(QMouseEvent * event){
-    /*if (dragging)
-    {*/
-        if (event->button() == Qt::LeftButton)
-        {
-            dragging = true;
-            xant = event->localPos().x();
-            yant = event->localPos().y();
-        }
-    /*}
-    else {
+void OpenGLWidget::mousePressEvent(QMouseEvent * event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
         dragging = true;
-        timer->start();
-    }*/
+        xant = event->localPos().x();
+        yant = event->localPos().y();
+    }
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent * event){
