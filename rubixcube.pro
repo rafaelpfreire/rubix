@@ -13,7 +13,22 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = rubixcube
 TEMPLATE = app
 
-win32:LIBS += -lOpengl32
+win32 {
+    VERSION = 0.9.0.1
+
+    QMAKE_TARGET_COMPANY = Nintersoft
+    QMAKE_TARGET_PRODUCT = Rubix
+    QMAKE_TARGET_DESCRIPTION = Rubix Cube Game 3D! - Remastered
+    QMAKE_TARGET_COPYRIGHT = Copyright (c) 2016 Nintersoft
+
+    RC_ICONS = Images\Icon.ico
+    RC_LANG = 0x0416
+
+    LIBS += -lOpengl32
+}
+else {
+    VERSION = 0.9.0
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
