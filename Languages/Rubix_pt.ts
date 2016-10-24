@@ -4,9 +4,13 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="14"/>
         <source>Rubix Cube Game 3D! - Remastered</source>
-        <translation>Jogo do Cubo Mágico 3D! - Remasterizado</translation>
+        <translation type="vanished">Jogo do Cubo Mágico 3D! - Remasterizado</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="14"/>
+        <source>Rubix Cube Game 3D!</source>
+        <translation>Jogo do Cubo Mágico 3D!</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="493"/>
@@ -64,8 +68,8 @@
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="59"/>
-        <location filename="../mainwindow.cpp" line="149"/>
+        <location filename="../mainwindow.cpp" line="61"/>
+        <location filename="../mainwindow.cpp" line="153"/>
         <source>Controls: 
 
 Space: Shuffle the cube and starts the count timer.
@@ -154,9 +158,13 @@ Tente novamente!</translation>
         <translation>Aplicação:</translation>
     </message>
     <message>
-        <location filename="../frmabout.ui" line="550"/>
         <source>Rubix Cube Game 3D! - Remastered</source>
-        <translation>Jogo do Cubo Mágico 3D! - Remasterizado</translation>
+        <translation type="vanished">Jogo do Cubo Mágico 3D! - Remasterizado</translation>
+    </message>
+    <message>
+        <location filename="../frmabout.ui" line="550"/>
+        <source>Rubix Cube Game 3D!</source>
+        <translation>Jogo do Cubo Mágico 3D!</translation>
     </message>
     <message>
         <location filename="../frmabout.ui" line="568"/>
@@ -256,22 +264,22 @@ p, li { white-space: pre-wrap; }
         <translation>Jogo do Cubo Mágico 3D! | Configurações</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="50"/>
+        <location filename="../frmsettings.ui" line="511"/>
         <source>Select the language of your preference :</source>
         <translation>Selecione o idioma de sua preferência :</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="64"/>
+        <location filename="../frmsettings.ui" line="525"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="69"/>
+        <location filename="../frmsettings.ui" line="530"/>
         <source>Português</source>
         <translation>Português</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="88"/>
+        <location filename="../frmsettings.ui" line="549"/>
         <source>Save</source>
         <translation>Salvar</translation>
     </message>

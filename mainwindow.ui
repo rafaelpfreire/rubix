@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Rubix Cube Game 3D! - Remastered</string>
+   <string>Rubix Cube Game 3D!</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">

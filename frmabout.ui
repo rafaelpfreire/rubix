@@ -547,7 +547,7 @@ QTextBrowser
      </font>
     </property>
     <property name="text">
-     <string>Rubix Cube Game 3D! - Remastered</string>
+     <string>Rubix Cube Game 3D!</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">

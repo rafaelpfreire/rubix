@@ -14,12 +14,12 @@ TARGET = rubixcube
 TEMPLATE = app
 
 win32 {
-    VERSION = 0.9.0.1
+    VERSION = 0.9.0.2
 
-    QMAKE_TARGET_COMPANY = Nintersoft
+    QMAKE_TARGET_COMPANY = Rafael P. Freire (Nintersoft)
     QMAKE_TARGET_PRODUCT = Rubix
-    QMAKE_TARGET_DESCRIPTION = Rubix Cube Game 3D! - Remastered
-    QMAKE_TARGET_COPYRIGHT = Copyright (c) 2016 Nintersoft
+    QMAKE_TARGET_DESCRIPTION = Rubix Cube Game 3D!
+    QMAKE_TARGET_COPYRIGHT = Copyright (c) 2016 Rafael P. Freire | Nintersoft
 
     RC_ICONS = Images\Icon.ico
     RC_LANG = 0x0416
