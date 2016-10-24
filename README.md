@@ -9,10 +9,10 @@ Embora todas as informações estejam disponíveis no próprio jogo, desenvolvem
 
 ##Baixar instalador compilado
 Você pode baixar os arquivos executáveis (instaladores) através dos seguintes links (para Windows):
-- [x] (x86) http://download.nintersoft.com/gerar-download.php?prog=cubo-magico ;
-- [x] (x86) http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x86 ;
-- [x] (x64) http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x64 ;
-- [ ] (Either x86 or x64) http://download.nintersoft.com/cubo%20m%c3%a1gico/ ;
+- [x] x86 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico ;
+- [x] x86 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x86 ;
+- [x] x64 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x64 ;
+- [ ] Tanto x86 quanto x64 : http://download.nintersoft.com/cubo%20m%c3%a1gico/ ;
 
 ##ATENÇÃO: Código Aberto | Licença de terceiros
 Por tratar-se de um projeto inicialmente desenvolvido pelo Rafael, este software embora aberto, está licenciado sob a licença de código aberto GPL v3 disponível em: https://github.com/rafaelpfreire/rubix/LICENSE .
@@ -37,10 +37,10 @@ Although all the informations about the game are available pm the game, we have 
 
 ##Download the compiled installer file
 You can download the executable files (installers) through the followin links (for Windows):
-- [x] (x86) http://download.nintersoft.com/gerar-download.php?prog=cubo-magico ;
-- [x] (x86) http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x86 ;
-- [x] (x64) http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x64 ;
-- [ ] (Either x86 or x64) http://download.nintersoft.com/cubo%20m%c3%a1gico/ ;
+- [x] x86 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico ;
+- [x] x86 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x86 ;
+- [x] x64 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x64 ;
+- [ ] As x86 as x64 : http://download.nintersoft.com/cubo%20m%c3%a1gico/ ;
 
 ##WARNING: Open source code | Third party licence
 Once this project have initially been developed Rafael, although it is open source code, it is licenced under GNU GPL v3 licence, available at: https://github.com/rafaelpfreire/rubix/LICENSE .
