@@ -33,10 +33,10 @@ The classic cross-platform rubix cube game in 3D!
 This game was developed using OpenGL V3.30, therefore you will have to check the compatibility of the game with your video card manufacturer.
 
 ##How to play
-Although all the informations about the game are available pm the game, we have also developed a help page to the program, which you can access here : https://docwiki.nintersoft.com/en/rubix-cube-game-3d/ .
+Although all the informations about the game are available in the game, we have also developed a help page to the program, which you can access here : https://docwiki.nintersoft.com/en/rubix-cube-game-3d/ .
 
 ##Download the compiled installer file
-You can download the executable files (installers) through the followin links (for Windows):
+You can download the executable files (installers) through the following links (for Windows):
 - [x] x86 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico ;
 - [x] x86 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x86 ;
 - [x] x64 : http://download.nintersoft.com/gerar-download.php?prog=cubo-magico&plat=x64 ;
