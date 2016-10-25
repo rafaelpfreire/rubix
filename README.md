@@ -46,6 +46,6 @@ You can download the executable files (installers) through the following links (
 Once this project have initially been developed Rafael, although it is open source code, it is licenced under GNU GPL v3 licence, available at: https://github.com/rafaelpfreire/rubix/LICENSE .
 
 ##Original developer
-This project was only possible because of the original developer Rafael Freire. You can check for more project on his original repository:
+This project was only possible because of the original developer Rafael Freire. You can check for more projects on his original repository:
 * Project repository: https://github.com/rafaelpfreire/rubix .
 * Developer repository: https://github.com/rafaelpfreire/ .
