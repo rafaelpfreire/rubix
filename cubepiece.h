@@ -18,11 +18,13 @@ public:
     void setLight(Light &light);
     void setCamera(Camera &camera);
     void setMaterial(Material &material);
+
     Light& getLight() { return this->light; }
     Camera& getCamera() { return this->camera; }
     Material& getMaterial() { return this->material; }
     QVector3D initialPosition() { return QVector3D(i_idxx, i_idxy, i_idxz); }
     QVector3D currentPosition() { return QVector3D(m_idxx, m_idxy, m_idxz); }
+
     int  idxx() { return this->m_idxx; }
     int  idxy() { return this->m_idxy; }
     int  idxz() { return this->m_idxz; }

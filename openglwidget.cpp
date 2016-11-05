@@ -29,6 +29,11 @@ OpenGLWidget::OpenGLWidget(QStatusBar *parent)
 
     connect(rubix, SIGNAL(shuffleEnd()), stopWatch, SLOT(start()));
     connect(rubix, SIGNAL(shuffleEnd()), this, SLOT(shuffleEndCallback()));
+
+    timer = new QTimer();
+    timer->setInterval(500);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(killMovement()));
 }
 
 OpenGLWidget::~OpenGLWidget()
@@ -53,7 +58,7 @@ void OpenGLWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    qglClearColor(QColor(Qt::black));
+    qglClearColor(QColor(50, 50, 50));
 }
 
 void OpenGLWidget::resizeGL(int width, int height)
@@ -77,7 +82,7 @@ void OpenGLWidget::paintGL()
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event)
 {
-    static int directionFlag = 0;
+    static int directionFlag = 2;
 
     switch (event->key()) {
     case 'D':
@@ -166,9 +171,6 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
 
         break;
 
-    case Qt::Key_Space:
-        rubix->movement(Rubix::Shuffle);
-
     default:
         break;
     }
@@ -176,12 +178,23 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
     updateGL();
 }
 
+void OpenGLWidget::shuffleCube()
+{
+    if (!isPlaying)
+    {
+        rubix->movement(Rubix::Shuffle);
+        isPlaying = true;
+    }
+}
+
 void OpenGLWidget::cubeSolvedCallback()
 {
-    QString str = "Congratulations, your time was: " +
+    QString str = tr("Congratulations, you have resolved the cube challenge in: ") +
                   stopWatch->toString() +
-                  "\nTry again!";
-    QMessageBox::information(this, "You Win!", str);
+                  tr(" seconds.\nTry again!");
+    QMessageBox::information(this, tr("You Won! | Rubix Cube Game 3D!"), str);
+
+    isPlaying = false;
 
     disconnect(rubix, SIGNAL(solved()), stopWatch, SLOT(stop()));
     disconnect(rubix, SIGNAL(solved()), this, SLOT(cubeSolvedCallback()));
@@ -191,4 +204,59 @@ void OpenGLWidget::shuffleEndCallback()
 {
     connect(rubix, SIGNAL(solved()), stopWatch, SLOT(stop()));
     connect(rubix, SIGNAL(solved()), this, SLOT(cubeSolvedCallback()));
+}
+
+void OpenGLWidget::mousePressEvent(QMouseEvent * event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        dragging = true;
+        xant = event->localPos().x();
+        yant = event->localPos().y();
+    }
+}
+
+void OpenGLWidget::mouseReleaseEvent(QMouseEvent * event){
+    if (dragging)
+    {
+        if (event->button() == Qt::LeftButton)
+        {
+            dragging = false;
+
+            static int directionFlag = 0;
+
+            dx = xant - event->localPos().x();
+            dy = yant - event->localPos().y();
+
+            if (abs(dx) < abs(dy)) {
+                if (dy > 0) rubix->movement(Rubix::RotateUp);
+                else rubix->movement(Rubix::RotateDown);
+            }
+            else {
+                if (dx > 0)
+                    if( directionFlag == 1 ) {
+                        directionFlag = 0;
+                        rubix->movement(Rubix::ChangeViewLeft);
+                    }
+                    else {
+                        rubix->movement(Rubix::RotateLeft);
+                    }
+                else
+                    if( directionFlag == 0 ) {
+                        directionFlag = 1;
+                        rubix->movement(Rubix::ChangeViewRight);
+                    }
+                    else {
+                        rubix->movement(Rubix::RotateRight);
+                    }
+            }
+
+            xant = event->localPos().x();
+            yant = event->localPos().y();
+        }
+    }
+}
+
+void OpenGLWidget::killMovement(){
+    dragging = false;
 }

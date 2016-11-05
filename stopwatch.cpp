@@ -13,7 +13,7 @@ StopWatch::StopWatch(QStatusBar *parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerInterrupt()));
 
-    statusBar->showMessage("Time    00:00:00");
+    statusBar->showMessage(tr("Time    00:00:00"));
 }
 
 int StopWatch::time_ms()
@@ -42,7 +42,7 @@ void StopWatch::stop()
 
     timer->stop();
 
-    QString str = QString("Time:    ") + this->toString();
+    QString str = QString(tr("Time:    ")) + this->toString();
     statusBar->showMessage(str);
 }
 
@@ -52,12 +52,12 @@ void StopWatch::reset()
     startTime = 0;
     currentTime = 0;
 
-    statusBar->showMessage("Time:   00:00:00");
+    statusBar->showMessage(tr("Time:   00:00:00"));
 }
 
 void StopWatch::timerInterrupt()
 {
-    QString str = QString("Time:    ") + this->toString();
+    QString str = QString(tr("Time:    ")) + this->toString();
     statusBar->showMessage(str);
 }
 

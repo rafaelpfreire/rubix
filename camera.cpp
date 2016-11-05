@@ -17,6 +17,11 @@ void Camera::rotate(float angle, const QVector3D &vec)
     view.rotate(angle, vec);
 }
 
+void Camera::rotate(QQuaternion &quat)
+{
+    view.rotate(quat);
+}
+
 void Camera::perspective(float verticalAngle, float aspectRation, float nearPlane, float farPlane)
 {
     projection.setToIdentity();

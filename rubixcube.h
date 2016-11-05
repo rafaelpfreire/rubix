@@ -4,6 +4,7 @@
 #include <QVector3D>
 #include <QtOpenGL>
 #include <QTimer>
+#include <QQuaternion>
 #include "cubepiece.h"
 
 #define RUBIX_NUMBER_OF_PIECES    27

@@ -1,10 +1,13 @@
 <RCC>
-    <qresource prefix="/shader">
-        <file>sh/fshader.glsl</file>
-        <file>sh/vshader.glsl</file>
-    </qresource>
-    <qresource prefix="/off">
-        <file>rsrc/cube.off</file>
-        <file>rsrc/cubev2.off</file>
+    <qresource prefix="/">
+        <file>Cube-pieces/cube.off</file>
+        <file>Cube-pieces/cubev2.off</file>
+        <file>Shaders/fshader.glsl</file>
+        <file>Shaders/vshader.glsl</file>
+        <file>Images/Icon.ico</file>
+        <file>Images/Icon.png</file>
+        <file>Images/checkbox.png</file>
+        <file>Images/down_arrow.png</file>
+        <file>Images/handle.png</file>
     </qresource>
 </RCC>

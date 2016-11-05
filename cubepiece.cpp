@@ -2,8 +2,8 @@
 
 CubePiece::CubePiece(QGLWidget *widget, Light &light, Material &material, Camera &camera,
                      float distance, int x, int y, int z) :
-    GraphicObject(widget, QString(":/shader/sh/vshader.glsl"), QString(":/shader/sh/fshader.glsl"),
-                  QString(":off/rsrc/cubev2.off"))
+    GraphicObject(widget, QString(":/Shaders/vshader.glsl"), QString(":/Shaders/fshader.glsl"),
+                  QString(":/Cube-pieces/cubev2.off"))
 {
     // Current and Initial Positions
     m_idxx = i_idxx = x;
